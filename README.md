@@ -5,8 +5,15 @@ Skill de craft de backend para agentes — critique pontuado, detector, hooks, d
 ## Início rápido
 
 ```bash
-node cli/bin/keel.js install --providers=cursor
+git clone https://github.com/raulaguila/keel.git /tmp/keel-skill
+cd /caminho/do/seu/projeto
+node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor
+# vários: --providers=cursor,claude,codex,gemini,copilot
+# todos:  --providers=all
+# lista:  --list-providers
 ```
+
+Guia completo por modelo/agente: **[INSTALL.md](INSTALL.md)**.
 
 `/keel init` → `/keel critique`. Contratos **Does / Does not** no SKILL. Load discipline: só o playbook do comando + eng-floor se for editar.
 
@@ -58,7 +65,7 @@ Argumentos entre `[]` são opcionais. Flags de playbook são texto falado ou suf
 
 | Comando | Flags | Descrição |
 |---------|-------|-----------|
-| `install` / `update` | `--providers=cursor,claude,agents,codex,gemini,copilot` · `--no-hooks` | Instala skill nos harnesses; opcionalmente wired hooks |
+| `install` / `update` | `--providers=cursor,claude,…\|all` · `--list-providers` · `--no-hooks` | Instala skill nos harnesses; hooks em cursor/claude/copilot/codex/grok |
 | `detect` | `--json` · `--hook` · `--explain` · `--stack=node\|python\|go\|ops` · `--min-severity=p0..p3` · `--list-rules` · `[path…]` | Scan determinístico de anti-patterns |
 | `status` | `--json` · `--detect` · `--slug=name` · `[path]` | Pulso critique/ship (+ detector opcional) |
 | `doctor` | `--json` · `--fix` | Drift de artefatos; `--fix` só stamps/config auto |

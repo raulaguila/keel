@@ -6,19 +6,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import {
+  PROVIDER_CATALOG,
+  expandProviders,
+  listProviderIds,
+} from "../lib/providers.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "../..");
 const SKILL_SRC = path.join(PKG_ROOT, "skill");
-
-const PROVIDERS = {
-  cursor: { dir: ".cursor/skills/keel", hooks: "cursor" },
-  claude: { dir: ".claude/skills/keel", hooks: "claude" },
-  agents: { dir: ".agents/skills/keel", hooks: null },
-  codex: { dir: ".agents/skills/keel", hooks: "codex" },
-  gemini: { dir: ".gemini/skills/keel", hooks: null },
-  copilot: { dir: ".github/skills/keel", hooks: "copilot" },
-};
+const SKILL_NAME = "keel";
 
 function cpDir(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
@@ -81,7 +78,6 @@ function mergeCursorHooks(root, skillRel) {
       (h) => !(h?.command || "").includes("keel") && !(h?.command || "").includes("hook.js"),
     );
   doc.hooks.afterFileEdit = [...filterKeel(doc.hooks.afterFileEdit), { command: cmd }];
-  // Best-effort Stop (Cursor may not always dispatch)
   doc.hooks.stop = [...filterKeel(doc.hooks.stop), { command: stopCmd }];
   fs.writeFileSync(hooksPath, JSON.stringify(doc, null, 2) + "\n");
 }
@@ -100,8 +96,14 @@ function mergeClaudeHooks(root, skillRel) {
   doc.hooks = doc.hooks || {};
   const entry = { type: "command", command: `node ${skillRel}/scripts/hook.js` };
   const stop = { type: "command", command: `node ${skillRel}/scripts/hook.js --stop` };
-  doc.hooks.PostToolUse = [...(doc.hooks.PostToolUse || []).filter((h) => !(h.command || "").includes("keel")), entry];
-  doc.hooks.Stop = [...(doc.hooks.Stop || []).filter((h) => !(h.command || "").includes("keel")), stop];
+  doc.hooks.PostToolUse = [
+    ...(doc.hooks.PostToolUse || []).filter((h) => !(h.command || "").includes("keel")),
+    entry,
+  ];
+  doc.hooks.Stop = [
+    ...(doc.hooks.Stop || []).filter((h) => !(h.command || "").includes("keel")),
+    stop,
+  ];
   fs.writeFileSync(settings, JSON.stringify(doc, null, 2) + "\n");
 }
 
@@ -123,52 +125,120 @@ function mergeCopilotHooks(root, skillRel) {
   );
 }
 
+function mergeCodexHooks(root, skillRel) {
+  const p = path.join(root, ".codex", "hooks.json");
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  let doc = { hooks: [] };
+  if (fs.existsSync(p)) {
+    try {
+      doc = JSON.parse(fs.readFileSync(p, "utf8"));
+    } catch {
+      doc = { hooks: [] };
+    }
+  }
+  const hooks = Array.isArray(doc.hooks) ? doc.hooks : [];
+  const filtered = hooks.filter((h) => !(String(h.command || "").includes("keel")));
+  filtered.push({ event: "postToolUse", command: `node ${skillRel}/scripts/hook.js` });
+  filtered.push({ event: "stop", command: `node ${skillRel}/scripts/hook.js --stop` });
+  doc.hooks = filtered;
+  fs.writeFileSync(p, JSON.stringify(doc, null, 2) + "\n");
+}
+
+function mergeGrokHooks(root, skillRel) {
+  const p = path.join(root, ".grok", "hooks", "keel.json");
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(
+    p,
+    JSON.stringify(
+      {
+        hooks: [
+          { event: "postToolUse", command: `node ${skillRel}/scripts/hook.js` },
+          { event: "stop", command: `node ${skillRel}/scripts/hook.js --stop` },
+        ],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+}
+
+function installInto(root, providerId, hooks) {
+  const spec = PROVIDER_CATALOG[providerId];
+  const dirs = [spec.dir(SKILL_NAME), ...((spec.extraDirs && spec.extraDirs(SKILL_NAME)) || [])];
+  for (const rel of dirs) {
+    const dest = path.join(root, rel);
+    cpDir(SKILL_SRC, dest);
+    try {
+      fs.chmodSync(path.join(dest, "scripts", "keel"), 0o755);
+    } catch { /* */ }
+    console.log(`installed → ${rel} (${spec.label})`);
+  }
+  const primary = spec.dir(SKILL_NAME);
+  if (hooks && spec.hooks === "cursor") {
+    mergeCursorHooks(root, primary);
+    console.log("  hooks: Cursor afterFileEdit + stop");
+  }
+  if (hooks && spec.hooks === "claude") {
+    mergeClaudeHooks(root, primary);
+    console.log("  hooks: Claude PostToolUse + Stop");
+  }
+  if (hooks && spec.hooks === "copilot") {
+    mergeCopilotHooks(root, primary);
+    console.log("  hooks: .github/hooks/keel.json");
+  }
+  if (hooks && spec.hooks === "codex") {
+    mergeCodexHooks(root, primary);
+    console.log("  hooks: .codex/hooks.json");
+  }
+  if (hooks && spec.hooks === "grok") {
+    mergeGrokHooks(root, primary);
+    console.log("  hooks: .grok/hooks/keel.json");
+  }
+}
+
 function install(args) {
   const root = process.cwd();
-  const providers = [];
+  let raw = [];
   let hooks = true;
+  let listOnly = false;
   for (let i = 0; i < args.length; i++) {
     if (args[i].startsWith("--providers=")) {
-      providers.push(...args[i].slice(12).split(",").map((s) => s.trim()).filter(Boolean));
+      raw.push(...args[i].slice(12).split(",").map((s) => s.trim()).filter(Boolean));
     } else if (args[i] === "--providers") {
-      providers.push(...String(args[++i] || "").split(",").map((s) => s.trim()).filter(Boolean));
+      raw.push(...String(args[++i] || "").split(",").map((s) => s.trim()).filter(Boolean));
     } else if (args[i] === "--no-hooks") hooks = false;
+    else if (args[i] === "--list-providers") listOnly = true;
+    else if (args[i] === "all") raw.push("all");
   }
-  if (!providers.length) providers.push("cursor");
+
+  if (listOnly) {
+    console.log("id\tlabel\tpath\tinvoke");
+    for (const id of listProviderIds()) {
+      const s = PROVIDER_CATALOG[id];
+      console.log(`${id}\t${s.label}\t${s.dir(SKILL_NAME)}\t${s.invoke(SKILL_NAME)}`);
+    }
+    return;
+  }
+
+  if (!raw.length) raw = ["cursor"];
+  let providers;
+  try {
+    providers = expandProviders(raw);
+  } catch (e) {
+    console.error(String(e.message || e));
+    console.error("Use: keel install --list-providers");
+    process.exit(1);
+  }
 
   if (!fs.existsSync(SKILL_SRC)) {
     console.error("keel install: skill/ not found next to package");
     process.exit(1);
   }
 
-  for (const p of providers) {
-    const spec = PROVIDERS[p];
-    if (!spec) {
-      console.error(`unknown provider: ${p} (cursor|claude|agents|codex|gemini|copilot)`);
-      process.exit(1);
-    }
-    const dest = path.join(root, spec.dir);
-    cpDir(SKILL_SRC, dest);
-    try {
-      fs.chmodSync(path.join(dest, "scripts", "keel"), 0o755);
-    } catch { /* */ }
-    console.log(`installed skill → ${spec.dir}`);
-    if (hooks && spec.hooks === "cursor") {
-      mergeCursorHooks(root, spec.dir);
-      console.log("merged Cursor afterFileEdit + stop hooks");
-    }
-    if (hooks && spec.hooks === "claude") {
-      mergeClaudeHooks(root, spec.dir);
-      console.log("merged Claude PostToolUse + Stop hooks → settings.local.json");
-    }
-    if (hooks && spec.hooks === "copilot") {
-      mergeCopilotHooks(root, spec.dir);
-      console.log("wrote .github/hooks/keel.json");
-    }
-  }
+  for (const p of providers) installInto(root, p, hooks);
   ensureKeelConfig(root);
   console.log("wrote .keel/config.json + config.local.json (if missing)");
-  console.log("Reload harness, then run /keel init");
+  console.log("Reload your harness, then run /keel init");
 }
 
 function runScript(name, args) {
@@ -181,14 +251,13 @@ function help() {
   console.log(`keel — backend craft skill CLI
 
 Usage:
-  keel install [--providers=cursor,claude,agents,codex,gemini,copilot] [--no-hooks]
-  keel update
-  keel detect  [--json] [--explain] [--stack=…] [--min-severity=p1] [path...]
-  keel status  [--json] [--detect] [--slug=name] [path]
-  keel doctor  [--json] [--fix]
-  keel live    --base=URL [--path=/health] [--json]
-  keel pin     add|remove|list [command]
+  keel install [--providers=cursor,claude,…|all] [--no-hooks]
+  keel install --list-providers
+  keel update   (alias of install)
+  keel detect | status | doctor | live | pin …
   keel help
+
+Providers: ${listProviderIds().join(", ")}, all
 `);
 }
 

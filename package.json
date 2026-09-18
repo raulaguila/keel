@@ -1,6 +1,6 @@
 {
   "name": "keel-craft",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Backend craft skill for AI coding agents — scored critique, personas, detector, hooks, doctor, live API",
   "type": "module",
   "bin": {
@@ -11,6 +11,7 @@
     "skill/",
     "scripts/",
     "README.md",
+    "INSTALL.md",
     "LICENSE"
   ],
   "engines": {
