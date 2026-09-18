@@ -1,5 +1,8 @@
 # optimize
 
+**Does:** fix hot path / N+1 / contention in code.  
+**Does not:** only rank $ drivers (→ `cost`); capacity modeling (→ `load`).
+
 Improve performance of a **measured or clearly evidenced** hot path. No speculative micro-optimizations.
 
 ## Flow
@@ -15,10 +18,3 @@ Improve performance of a **measured or clearly evidenced** hot path. No speculat
 - Caching as first move without a keying/invalidations story
 - Denormalizing everything “for speed”
 - Optimizing cold admin paths when Serve-mode APIs are on fire
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

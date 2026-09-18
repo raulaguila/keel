@@ -1,6 +1,9 @@
 # migrate
 
-Plan and implement **safe schema/API evolution**: expand/contract, dual-write windows, rollback.
+**Does:** safe schema/API expand-contract + rollback.  
+**Does not:** multi-env/tenant matrix alone (→ `adapt`).
+
+Plan and implement **safe schema/API evolution**.
 
 ## Flow
 
@@ -17,10 +20,3 @@ Plan and implement **safe schema/API evolution**: expand/contract, dual-write wi
 - Big-bang renames on hot tables without a window
 - Destructive contract deploys without a consumer inventory
 - Inventing downtime windows the user did not approve
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

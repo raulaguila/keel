@@ -1,6 +1,9 @@
 # cost
 
-Find and rank **cost drivers**: query, compute, storage, egress, third-party APIs, idle capacity. No invented cloud bills.
+**Does:** rank cost drivers with confidence (no fake bills).  
+**Does not:** rewrite hot paths (→ `optimize`); invent unit prices.
+
+Find and rank **cost drivers**: query, compute, storage, egress, vendors, idle capacity.
 
 ## Flow
 
@@ -20,10 +23,3 @@ Find and rank **cost drivers**: query, compute, storage, egress, third-party API
 - “Move to microservices to save money” without evidence
 - Premature sharding
 - Invented unit prices — ask for rate card or use relative comparisons only
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

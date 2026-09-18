@@ -1,170 +1,63 @@
 # critique
 
-Resolve one stable target (repo root, service, module, API surface, or path). Produce a **scored engineering critique** with category grades, persona red flags, and a concrete improvement backlog — the backend analog of Impeccable’s design critique.
+Scored engineering critique of one target (path/service/module). Chat report primary; also `.keel/critique/<ts>__<slug>.md` when possible.
 
-Chat report is the primary deliverable. Also write `.keel/critique/<timestamp>__<slug>.md` when the filesystem allows.
+**Does:** score /32, personas, backlog, trend. **Does not:** edit app code unless asked.
 
-**Scope:** analyze application targets only — see [analysis-scope.md](analysis-scope.md). Never score Keel-owned paths as the product.
+Scope: app targets only ([analysis-scope.md](analysis-scope.md)). Prose in **user’s language**.
 
-## Language
+## Load (token discipline)
 
-Write the entire critique report (scores commentary, impression, issues, persona red flags, questions, Next commands) in the **user’s language**. Keep category names in the score table stable (English labels OK for comparability) but explain Key Issue and all narrative in the user’s language.
+| Depth | Load |
+|-------|------|
+| **Default** | This file + [baselines.md](baselines.md) + detector |
+| **Full** (default for `/keel critique`) | + [personas.md](personas.md) + [critique-scoring.md](critique-scoring.md) |
+| **Deep mode** (Serve/Process/Store and user wants depth) | + matching `mode-*.md` |
+| **Ops blurb** | [ops-surfaces.md](ops-surfaces.md) only if Make/Docker/migrations exist |
+| **Stack** | [stack-rubrics.md](stack-rubrics.md) only when language is clear |
 
-## Hard invariants
+Do **not** load eng-floor (read-only command). Do not load ship/harden playbooks.
 
-- **Assessment A** (persona + category judgment) and **Assessment B** (deterministic evidence) are both required.
-- Run A and B as **isolated sub-agents** when Task/sub-agent tools exist. Inline = degraded: first line must be `⚠️ DEGRADED: single-context (<reason>)`.
-- Finish A before folding B into parent synthesis.
-- Prefer reading code, tests, OpenAPI/proto, migrations, configs, and one real request/job path. Invent no SLOs, QPS, or bills.
-- Load [personas.md](personas.md), [baselines.md](baselines.md), and [stack-rubrics.md](stack-rubrics.md) when scoring.
-- End with questions **last** — nothing after the question block.
+`--quick`: table + ≤3 Priority Issues + detector summary; skip persona subsections and long impression. Still 8-row table.
 
-## Focus mode
+## Invariants
 
-User may pass `--only <cats>` or say “focus on security and cost”. Still emit the **full 8-row table**, but:
+- Assessment **A** (judgment) + **B** (detector/evidence) both required.
+- Prefer isolated sub-agents for A∥B; else first line: `⚠️ DEGRADED: single-context (<reason>)`.
+- Invent no SLOs/QPS/bills.
+- Questions last (when ≥3 Priority Issues).
 
-- Mark non-focus categories scored lightly (`depth: skim`) in Key Issue.
-- Put deep findings only in focus categories.
-- Header must say `Focus: security, cost`.
+## Focus
 
-Category aliases: `boundaries`, `contracts`, `reliability`, `data`, `security`, `cost`/`performance`, `operability`/`observe`, `organization`/`complexity`.
+`--only security,cost` (or spoken): full table; non-focus = `depth: skim`; header `Focus: …`.
 
-## Assessment A — Engineering judgment (+ personas)
+## A — Judgment
 
-Without detector dumps:
+1. Infer mode (Serve/Process/Store/Integrate/Control).
+2. Pick 2–3 personas ([personas.md](personas.md)); +1 PRODUCT-specific if Users/Operating Context real.
+3. Score 8 categories 0–4 via [critique-scoring.md](critique-scoring.md); `n/a` only if inapplicable.
+4. Return: mode, personas, scores + one-line key issue, 2–3 strengths, 3–5 Priority Issues, persona red flags, questions.
 
-1. Infer surface **mode** (Serve / Process / Store / Integrate / Control). Load mode depth when Serve/Process/Store: [mode-serve.md](mode-serve.md) / [mode-process.md](mode-process.md) / [mode-store.md](mode-store.md).
-2. Auto-select **2–3 personas** from [personas.md](personas.md) using the selection table. If PRODUCT.md has real Users / Operating Context, add **1 project-specific persona** (do not invent audience).
-3. For each selected persona, walk the primary path of the target and list **specific red flags** (file/symbol when possible) — not generic advice.
-4. Score all **8 categories** 0–4 using the [Category Scoring Guide](#category-scoring-guide). Use `n/a` only when the category cannot apply to this surface; renormalize the total.
+## B — Evidence
 
-Return: mode, personas used, category scores with one-line key issue each, 2–3 strengths, 3–5 priority issues (P0–P3), persona red flags, open questions.
+1. `node <skill>/scripts/detect.js --json [--stack=<lang>] <app-target>`
+2. Optional stack-rubrics / ops one-liner.
+3. ≥2 of: authz tests, import direction, pool/timeouts, migration safety, one request/job path.
+4. Evidence map: each Priority Issue → `ruleId` | `path:line` | `judgment-only`.
 
-## Assessment B — Evidence
+## Report (chat)
 
-B must be **file-backed**. Prefer citations over vibes.
+1. Provenance (`Method: dual-agent` or DEGRADED) · target · mode · personas · band · focus  
+2. Score table (8 + total/32) · Trend (last 5 snapshots) or “First run”  
+3. Impression (2–4 sentences)  
+4. What’s working (2–3)  
+5. Priority Issues (What / Why / Fix / Suggested command)  
+6. Persona red flags (specific only)  
+7. Evidence notes + evidence map  
+8. Ask user (if ≥3 issues) — priority / scope / constraints  
+9. Next commands — only after answers/skip; [next-commands.md](next-commands.md)
 
-1. Run the bundled detector when present (app path only — [analysis-scope.md](analysis-scope.md)):
-   ```bash
-   node <skill-base-dir>/scripts/detect.js --json [--explain] [--stack=<lang>] <target>
-   # or: <skill-base-dir>/scripts/keel detect --json <target>
-   ```
-   Pass `--stack` when the repo language is clear (quieter; skips other packs). Use `--explain` when folding remediation into Evidence notes.
-2. Apply [stack-rubrics.md](stack-rubrics.md) for the repo’s language — list **concrete hits** with path:line when possible.
-3. Skim [ops-surfaces.md](ops-surfaces.md): Makefile / Docker / Compose / migrations / deploy when present. One-line **Ops:** blurb in Evidence notes.
-4. Also gather at least **two** of: failure/authz tests; import direction; pool/timeout config; migration safety signals; one real request/job path trace in code.
-5. For each Priority Issue you will keep in synthesis, attach **evidence**: detector rule id and/or file:line, or “judgment-only (A)” if B found nothing. Do not invent detector hits.
-
-Return: detector JSON summary (counts by rule + primaryCount), rubric hits, ops blurb, evidence map (issue → proof), false-positive notes. If detector missing, say so — do not pretend.
-
-## Synthesis — report structure
-
-Do not concatenate A+B. Weave agreement/disagreement. Present this structure in chat:
-
-### 1. Header provenance
-
-- Dual-agent: `Method: dual-agent (A: … · B: …)`
-- Or: `⚠️ DEGRADED: single-context (<reason>)`
-- Target, mode, personas selected, baseline band from [baselines.md](baselines.md), focus (if any)
-
-### 2. Engineering Health Score
-
-| # | Category | Score | Key Issue |
-|---|----------|-------|-----------|
-| 1 | Boundaries & ownership | ?/4 | … |
-| 2 | Contracts & API clarity | ?/4 | … |
-| 3 | Reliability & failure modes | ?/4 | … |
-| 4 | Data integrity & migrations | ?/4 | … |
-| 5 | Security & authorization | ?/4 | … |
-| 6 | Performance & cost awareness | ?/4 | … |
-| 7 | Operability & observability | ?/4 | … |
-| 8 | Organization & complexity | ?/4 | … |
-| **Total** | | **??/[applicable max]** | **[Rating band]** |
-
-Applicable max = 4 × scored categories (usually **/32**). Be honest: a 4 is rare. Most real backends land **18–26 / 32**.
-
-**Bands**: use [baselines.md](baselines.md). Apply mode soft-floors and call out block-merge conditions.
-
-### Trend
-
-After writing the snapshot, if prior `.keel/critique/*__<slug>.md` files exist, print:
-
-`Trend for <slug> (last 5): 18 → 22 → 24 → 21 → 26 (out of 32)`
-
-First run → “First run for this target, no trend yet.” Differing `max_score` → print per-entry denominators.
-
-### 3. Overall impression
-
-2–4 sentences: what works, what doesn’t, single biggest opportunity.
-
-### 4. What’s working
-
-2–3 specific strengths with why they matter.
-
-### 5. Priority issues
-
-3–5 items, ordered by impact. Each:
-
-- **[P?] Title**
-- **What** — concrete location
-- **Why it matters** — blast radius / user or cost impact
-- **Fix** — smallest correct change
-- **Suggested command** — one of: `ship`, `harden`, `organize`, `distill`, `optimize`, `cost`, `clarify`, `audit`, `secure`, `observe`, `shape`, `document`
-
-### 6. Persona red flags
-
-One short subsection per selected persona. Specific failures only (see personas.md). Example tone:
-
-> **Mira (On-call SRE):** No timeout on `payments/client.ts` outbound call. Error swallowed in `catch (e) {}` at `webhooks/handler.ts:88`. Will page with no actionable log field.
-
-### 7. Evidence notes
-
-What Assessment B confirmed / contradicted. Missing detector = say so. Include a short **evidence map**: each Priority Issue → `ruleId` / `path:line` / `judgment-only`.
-
-### 8. Before questions
-
-Do not dump an action plan before Ask the User.
-
-### 9. Ask the user (LAST in this message)
-
-**Required** when there are ≥3 Priority Issues. Same message as the report; questions after the report body.
-
-Ask 2–4 targeted questions with concrete options tied to findings:
-
-1. **Priority** — which issue cluster first?
-2. **Scope** — top 3 / all P0–P1 / everything?
-3. **Constraints** — anything off-limits?
-
-If <3 Priority Issues: print `Questions skipped: <n> priority issues`.
-
-### 10. After the user answers (or after skip) — Next commands
-
-Load [next-commands.md](next-commands.md).
-
-- Filter Priority Issues to the chosen scope.
-- **If zero remain:** `No pending issues — no next commands.` (or the equivalent in the user’s language). Do not invent filler.
-- **If some remain:** each Next command closes a **named** issue; reason text in the **user’s language**:
-
-#### Next commands
-
-1. `/keel harden checkout` — fecha [P0] timeout ausente no client de payments
-2. `/keel secure checkout` — fecha [P1] IDOR em GET /invoices/:id
-
-> Você pode pedir para eu rodar um por um, todos de uma vez, ou em outra ordem.
-
-(Use the user’s language for that closing line too.)
-
----
-
-## Persistence
-
-When possible:
-
-```text
-.keel/critique/<ISO-ish-timestamp>__<slug>.md
-```
-
-Include YAML frontmatter when possible:
+## Persist
 
 ```yaml
 ---
@@ -174,109 +67,10 @@ total_score: 22
 max_score: 32
 p0_count: 1
 p1_count: 3
-personas: [Mira, Kai, Devon]
+personas: [Mira, Kai]
 mode: Serve
 focus: []
 ---
 ```
 
-Then the full score table and priority issues. Skip “Ask the user”. If `.keel/` cannot be written, say so and continue — chat still delivers the report.
-
----
-
-## Category Scoring Guide
-
-Score each **0–4**. Prefer evidence over taste.
-
-| Score | Meaning |
-|-------|---------|
-| 0 | Absent / actively harmful |
-| 1 | Rudimentary; will fail under modest stress |
-| 2 | Partial; common paths OK, edges missing |
-| 3 | Solid for the stated PRODUCT constraints; minor gaps |
-| 4 | Exemplary; clear conventions others can copy |
-
-### 1. Boundaries & ownership
-
-Who owns which data and deployable? Dependency direction clear?
-
-- 0: Ball of mud; any package imports any other; no ownership
-- 2: Folders exist but cross-domain writes / shared DB without owner
-- 4: Explicit boundaries, one writer per aggregate, deps point inward
-
-### 2. Contracts & API clarity
-
-Errors, versioning, pagination, idempotency keys, docs match code.
-
-- 0: Ad-hoc payloads; opaque errors; breaking changes silently
-- 2: Some OpenAPI/proto; inconsistent error shapes
-- 4: Stable contracts, explicit compatibility rules, actionable errors
-
-### 3. Reliability & failure modes
-
-Timeouts, retries, idempotency, DLQ/poison, degradation.
-
-- 0: No timeouts; retries on non-idempotent calls; silent loss
-- 2: Some clients hardened; many paths still best-effort
-- 4: Every I/O edge has policy; failures are named and tested
-
-### 4. Data integrity & migrations
-
-Transactions, tenancy filters, expand/contract, rollback story.
-
-- 0: Unsafe migrations; lost updates; missing tenant isolation
-- 2: Forward-only migrations; weak dual-write windows
-- 4: Safe evolve story; invariants enforced close to data
-
-### 5. Security & authorization
-
-Authn/z on sensitive paths, secrets handling, least privilege.
-
-- 0: IDOR / open admin / secrets in repo
-- 2: Auth on main routes; gaps on jobs, webhooks, admin
-- 4: Consistent authz model; secrets elsewhere; denial tested
-
-### 6. Performance & cost awareness
-
-N+1, bounds, indexes, hot-path waste, egress — relative to PRODUCT.md.
-
-- 0: Unbounded queries; obvious N+1 on hot paths
-- 2: Happy path fine; exports/admin/reporting dangerous
-- 4: Hot paths measured or clearly bounded; cost hotspots known
-
-### 7. Operability & observability
-
-Logs, metrics, traces, correlation ids, runbooks, deploy/rollback.
-
-- 0: `console.log` only; no correlation; can’t debug prod
-- 2: Some metrics; missing high-cardinality discipline or traces
-- 4: Critical paths observable; on-call can act from signals
-
-### 8. Organization & complexity
-
-Package shape, accidental abstraction, discoverability for new engineers.
-
-- 0: God packages; frameworks for one call site
-- 2: Navigable with tribal knowledge
-- 4: Obvious layout; distillable; ARCHITECTURE.md matches reality
-
-**Mode applicability examples:** Store surfaces may soft-weight Contracts if no external API (`n/a` only if truly no consumers). Control surfaces rarely `n/a` Security.
-
----
-
-## Issue severity (P0–P3)
-
-| Priority | Meaning | Action |
-|----------|---------|--------|
-| **P0** | Wrong, unsafe, or data-losing | Fix now |
-| **P1** | Will hurt at modest scale / on-call / audit | Fix before next release |
-| **P2** | Real craft gap; workaround exists | Next pass |
-| **P3** | Polish / clarity | If time |
-
----
-
-## Narrow vs full-repo
-
-- **Repo root / “the backend”:** score the system as operated; sample 2–3 critical paths deeply rather than every file.
-- **Single service/module:** score that boundary; mark categories outside scope `n/a` with reason.
-- User said only `security` / `cost` / etc.: still emit the full table, but depth-focus that category and say so in the header.
+Plus table + Priority Issues (no Ask block).

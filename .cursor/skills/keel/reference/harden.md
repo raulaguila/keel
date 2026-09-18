@@ -1,6 +1,9 @@
 # harden
 
-Production readiness for failure: timeouts, retries, idempotency, authz edges, degradation.
+**Does:** timeouts, retries, idempotency, authz edges, degradation on I/O.  
+**Does not:** close whole critique snapshot (→ `ship`); schema evolve (→ `migrate`).
+
+Production readiness for **failure modes**.
 
 ## Flow
 
@@ -18,10 +21,3 @@ Production readiness for failure: timeouts, retries, idempotency, authz edges, d
 - [ ] Poison messages / DLQ story for consumers
 - [ ] Partial failure behavior is defined (fail closed vs degraded)
 - [ ] Backpressure or shedding under overload (at least a plan)
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

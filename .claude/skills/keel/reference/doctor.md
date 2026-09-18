@@ -1,5 +1,8 @@
 # doctor
 
+**Does:** artifact drift (`PRODUCT`/`ARCHITECTURE`/config/hooks), `--json`/`--fix`.  
+**Does not:** app smell critique or detector pass over `src/`.
+
 Report (and optionally repair) **drift between Keel artifacts and application reality**.
 
 Doctor is a **meta** check. It is **not** a code critique, architecture review, or detector pass over the app — and it must **never** treat Keel-generated docs as application source to “analyze for quality.”
@@ -55,11 +58,3 @@ Do **not** open PRODUCT/ARCHITECTURE prose for quality scoring; do not smell ski
 ## Language
 
 User’s language for the table and explanations (SKILL.md).
-
----
-
-## Close
-
-If this run left **pending issues** (failed/warn checks), end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)) — typically `init`, `document`, `hooks`, or `keel install`.
-If all checks pass, do **not** suggest commands (optional: `No pending issues — no next commands.`).
-Do **not** suggest `critique` / `harden` / `optimize` from doctor unless a check explicitly requires them.

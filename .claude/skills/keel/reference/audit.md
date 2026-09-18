@@ -1,6 +1,9 @@
 # audit
 
-Technical quality pass: correctness, security posture, reliability, observability — not a full product redesign.
+**Does:** broad correctness/security/reliability/observability checklist.  
+**Does not:** deep authz matrix (→ `secure`); deep telemetry design (→ `observe`); close critique backlog (→ `ship`).
+
+Technical quality pass — not a full product redesign.
 
 ## Scope
 
@@ -22,10 +25,3 @@ Resolve target paths using [analysis-scope.md](analysis-scope.md) — skip Keel-
 - Do not expand into greenfield architecture unless the audit proves the topology is unsafe.
 - Security P0s: report before cosmetic nits.
 - If the user only asked for report, do not edit.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

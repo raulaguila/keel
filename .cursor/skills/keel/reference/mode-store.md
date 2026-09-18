@@ -1,8 +1,8 @@
 # mode-store
 
-Depth guide for **Store** mode: data plane concerns — migrations, tenancy, consistency, and query bounds.
+**Lazy-load only** from full `/keel critique` (or shape) when mode is Store — not on every command.
 
-Use when the target is schemas, repositories, migration trees, or a data service (PRODUCT platform `data`), or when critique categories Data / Cost dominate.
+Depth for **Store**: migrations, tenancy, consistency, query bounds.
 
 ## Soft floors (critique)
 
@@ -46,10 +46,3 @@ Data changes, Bounds, Authz (tenant isolation), Evidence (no invented QPS) from 
 ## Critique category tilt
 
 Deep on **Data**, **Performance & cost**, **Security** (isolation); Contracts soft-weight if no external API (`n/a` only when truly no consumers).
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

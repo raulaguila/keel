@@ -1,6 +1,9 @@
 # secure
 
-Focused security pass: threat sketch, authz matrix, secrets, and abuse paths — deeper than `audit`’s security slice.
+**Does:** threat sketch + authz matrix + secrets/abuse paths.  
+**Does not:** general reliability (→ `harden`); broad checklist (→ `audit`); score /32 (→ `critique`).
+
+Focused security pass — deeper than `audit`’s security slice.
 
 ## Flow
 
@@ -21,10 +24,3 @@ Focused security pass: threat sketch, authz matrix, secrets, and abuse paths —
 
 - Security theater (random middleware without enforcement at data access)
 - Disabling auth “temporarily” in committed code
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

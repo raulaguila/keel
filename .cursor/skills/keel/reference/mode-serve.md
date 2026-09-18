@@ -1,8 +1,8 @@
 # mode-serve
 
-Depth guide for **Serve** mode: request/response APIs where latency, authz, idempotency keys, pagination, and timeouts dominate.
+**Lazy-load only** from full `/keel critique` (or shape) when mode is Serve — not on every command.
 
-Use when critique/shape/harden targets a synchronous HTTP/gRPC/GraphQL edge, or PRODUCT platform is `web-api` / `mobile-bff`.
+Depth for **Serve**: request/response; latency, authz, idempotency keys, pagination, timeouts.
 
 ## Soft floors (critique)
 
@@ -49,10 +49,3 @@ Prioritize Authz, Bounds, I/O discipline, Idempotency, Failure naming from [eng-
 ## Critique category tilt
 
 When scoring Serve, dig deepest on **Contracts**, **Reliability**, **Security**; skim Organization only unless the handler graph is tangled.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

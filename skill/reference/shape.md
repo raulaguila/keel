@@ -73,10 +73,3 @@ All prose in the user’s language. Keep API field names and status codes as in 
 ## Scope
 
 Do not smell-analyze Keel-owned paths ([analysis-scope.md](analysis-scope.md)).
-
----
-
-## Close
-
-If open questions or unresolved trade-offs remain, Next commands may include clarifying work or `document` after build.
-If the ADR was accepted cleanly with no pending questions: `No pending issues — no next commands.`

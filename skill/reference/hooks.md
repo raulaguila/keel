@@ -38,10 +38,3 @@ Env overrides: `KEEL_HOOK_DISABLED=1`, `KEEL_HOOK_QUIET=1`, `KEEL_HOOK_LOG=path`
 Mechanical findings only. Judgment stays in eng-floor + critique.
 
 Installer wires Cursor `afterFileEdit` + `stop`, and Claude `PostToolUse` + `Stop` when those providers are selected.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

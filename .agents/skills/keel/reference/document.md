@@ -1,6 +1,9 @@
 # document
 
-Generate `ARCHITECTURE.md` from **existing code and configs**. Tokens/structure are normative; prose explains why.
+**Does:** generate/refresh ARCHITECTURE.md from code.  
+**Does not:** surgical post-fix patch (→ doc-sync); rewrite PRODUCT.
+
+Generate `ARCHITECTURE.md` from **existing code and configs**.
 
 Does not rewrite PRODUCT.md. Does not invent product SLOs.
 
@@ -19,10 +22,3 @@ Does not rewrite PRODUCT.md. Does not invent product SLOs.
 Write `ARCHITECTURE.md` prose in the **user’s language** (see SKILL.md). Keep code symbols, package paths, and protocol names unchanged.
 - Copying blog-standard layers the repo does not use.
 - Filling cost/SLO sections with made-up numbers (point to PRODUCT.md or `Unknown`).
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`).

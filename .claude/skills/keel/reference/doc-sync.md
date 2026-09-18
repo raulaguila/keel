@@ -33,7 +33,3 @@ Skip doc edits for pure refactors with **no** external or operational meaning (r
 
 Applies to every command that edits app code (`harden`, `ship`, `optimize`, `organize`, `migrate`, `extract`, `clarify`, general eng-floor work).  
 `critique` / `audit` / `status` / `doctor` are read-oriented — they **report** doc drift; they do not rewrite unless the user asked to repair.
-
-## Close
-
-A forgotten doc update **is** a pending issue when the code change was structural. Map it to `document` or `clarify` with the section named.

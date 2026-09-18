@@ -1,8 +1,8 @@
 # mode-process
 
-Depth guide for **Process** mode: queues, workers, batch, and async pipelines where throughput, idempotency, poison/DLQ, and prefetch dominate.
+**Lazy-load only** from full `/keel critique` (or shape) when mode is Process — not on every command.
 
-Use when the target is a consumer, cron/batch job, or outbox/relay — or PRODUCT platform is `worker`.
+Depth for **Process**: queues/workers/batch; throughput, idempotency, poison/DLQ, prefetch.
 
 ## Soft floors (critique)
 
@@ -48,10 +48,3 @@ Idempotency, I/O discipline, Failure naming, Observability (queue depth / lag), 
 ## Critique category tilt
 
 Deep on **Reliability**, **Operability**, **Organization** (job module boundaries); Contracts if event payloads are external; Security for privileged workers and webhook-driven enqueue.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

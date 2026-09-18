@@ -1,8 +1,10 @@
 # new-work
 
-**Greenfield feature** flow when the user asks to build a new module/capability without naming a specific Keel command.
+**Not a `/keel` command** — routing playbook only. Use when the user asks to build a greenfield feature **without** naming a command.
 
 Synonyms: “build this feature”, “add a module”, “new service slice”, “implement X from scratch”.
+
+If a named command fits (`harden`, `migrate`, …), load that playbook instead.
 
 ## Intent
 
@@ -33,10 +35,3 @@ Sequence planning and craft so new work lands with contracts, eng-floor, detecti
 - Named command already fits (`harden`, `migrate`, `optimize`, …) → load that playbook instead.
 - Pure eval (`critique`, `audit`, `doctor`) → no build path.
 - Tiny bugfix with known root cause → eng-floor + fix; skip full shape if topology unchanged.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

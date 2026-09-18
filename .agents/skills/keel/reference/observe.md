@@ -1,6 +1,9 @@
 # observe
 
-Close observability gaps on a target path: logs, metrics, traces, cardinality, and on-call usefulness.
+**Does:** telemetry gaps (logs/metrics/traces/cardinality) on a path.  
+**Does not:** HTTP probe running server (→ `live`); full audit.
+
+Close observability gaps on a target path.
 
 ## Flow
 
@@ -21,10 +24,3 @@ Close observability gaps on a target path: logs, metrics, traces, cardinality, a
 - High-cardinality labels (user id, email, full URL) on metrics
 - Logging bodies that may contain secrets/PII
 - Inventing SLO targets not in PRODUCT.md
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

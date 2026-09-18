@@ -1,8 +1,9 @@
 # live
 
-**Live API iteration** against a running service: hit endpoints, compare status and body shapes, fix, re-hit. Not browser automation, not UI screenshots.
+**Does:** probe running HTTP API (status/body).  
+**Does not:** add instrumentation (→ `observe`); browser live mode.
 
-Synonyms: “probe the API”, “curl loop”, “live contract check”, “hit /health and fix”.
+HTTP-only live iteration against a running service. Synonyms: “probe the API”, “curl loop”, “hit /health”.
 
 ## Intent
 
@@ -46,10 +47,3 @@ Validate wire behavior with a **bounded** request pass against a real base URL t
 
 - Application targets only ([analysis-scope.md](analysis-scope.md)).
 - Prefer evidence (status + body) over vibes; do not invent SLOs from a single probe.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

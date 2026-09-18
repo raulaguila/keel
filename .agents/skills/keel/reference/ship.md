@@ -1,6 +1,9 @@
 # ship
 
-Final **production-readiness** pass that closes a critique backlog and clears the path to release. Backend analog of a launch checklist — not visual polish.
+**Does:** close critique P0/P1, mark snapshot `closed_by: ship`, release gate.  
+**Does not:** redesign topology (→ `shape`); only harden one client (→ `harden`).
+
+Final **production-readiness** pass — backend analog of a launch checklist (not visual polish).
 
 Synonyms the user may say: “ship it”, “ready for prod”, “preflight”, “release gate”, “stabilize for launch”. Deprecated alias: `polish` → load this playbook.
 
@@ -61,10 +64,3 @@ If nothing could be written, say so in chat and still report checklist results.
 - If topology/concept is wrong → stop; recommend `shape` / redesign — do not “ship” a discarded design.
 - Bound the pass: one inspect → one fix batch → one confirm → stop.
 - Language: prefer *ship*, *release gate*, *preflight*, *production-ready* — avoid *polish*, *pixel*, *visual*.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

@@ -1,5 +1,8 @@
 # adapt
 
+**Does:** multi-env / region / tenant / alternate consumers.  
+**Does not:** single migration step (→ `migrate`).
+
 Adapt the backend for **multi-env**, **multi-region**, **multi-tenant**, or **alternate consumers** (e.g. mobile BFF vs public web API) without a concealed rewrite.
 
 Synonyms: “env matrix”, “region split”, “tenant isolation pass”, “BFF vs API”, “config per stage”.
@@ -39,10 +42,3 @@ Make one codebase honest about **where it runs and who calls it**: config matric
 - Breaking wire contracts for one consumer without inventory
 - Shared DB across independently deployable services without a single owner
 - Inventing multi-region active-active without PRODUCT evidence
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

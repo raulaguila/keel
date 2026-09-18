@@ -1,84 +1,79 @@
 ---
 name: keel
-description: "Use when the user wants to design, review, score, or improve backend systems: APIs, services, workers, data models, architecture, performance, cost, reliability, organization, security, observability, migrations, capacity, onboarding/activation, multi-env adaptation, live API probes, and production readiness. Covers scored critique with engineering personas, ship/trend loops, doctor drift checks, deterministic detect, hooks (edit+stop), shape-before-build, harden, distill, extract, observe, secure, migrate, load, onboard, adapt, live. Not for frontend/UI-only design work."
+description: "Use when designing, reviewing, scoring, or improving backends: APIs, workers, data, reliability, security, cost, migrations, ship readiness. Not for frontend/UI-only work."
 ---
 
-This skill gives you permission and procedure to practice out-of-distribution **backend craft**: production-grade systems with clear boundaries, honest scale assumptions, bounded failure modes, and cost awareness — not tutorial-shaped microservices or hopeful architecture diagrams.
+Backend craft skill. Prefer evidence over vibes. Invent no SLOs/QPS/budgets.
 
-Core principles:
-- Go all out on correctness and operability. Incomplete error paths are not “MVP.”
-- Prefer evidence over vibes: code, schemas, traces, plans, bills — invent no SLOs, QPS, or budgets. Read **ops surfaces** (Makefile, Docker/Compose, migrations, deploy manifests) when present — [reference/ops-surfaces.md](reference/ops-surfaces.md). Optional sub-agent: [agents/keel-ops-reader.md](agents/keel-ops-reader.md).
-- Verify in bounded passes: change → inspect once (tests + static signals + one runtime path) → fix in one batch → confirm once → stop. Open-ended self-QA burns money. Optional finish pass: [agents/keel-finish-reviewer.md](agents/keel-finish-reviewer.md).
-- **Doc sync.** If this run changed boundaries, contracts, data, failure modes, observability, or delivery, update `ARCHITECTURE.md` / `.keel/surfaces/` / `PRODUCT.md` in the **same pass** when needed — [reference/doc-sync.md](reference/doc-sync.md). Stale authority is a pending issue.
-- **User language.** Write all Keel-facing prose in the **user’s language** (the language of their messages in this chat): `PRODUCT.md`, `ARCHITECTURE.md`, surface briefs, critique/audit/ship reports, Next commands, questions, and commit/PR summaries you draft for them. Keep **command names**, file paths, code identifiers, HTTP status codes, and rule ids in their original form (`/keel ship`, `eng-floor`, `empty-catch`). If the user’s language is ambiguous, ask once; default to the language of the latest user message.
-- **Keel-owned paths are not the app.** Unless the user explicitly targets them, do not run smell analysis, critique scoring, or detector judgment on: `PRODUCT.md`, `ARCHITECTURE.md`, `.keel/**`, `.cursor/skills/keel/**`, `.claude/skills/keel/**`, `.agents/skills/keel/**`, or this skill’s `reference/` / `assets/`. Those files are context or meta; application code lives elsewhere (`src/`, `app/`, services, …). `/keel doctor` only **checks drift** of artifacts against the app — it does not critique artifact prose.
+## Laws (always)
 
-## Setup
+1. **Correctness & operability** — incomplete error paths are not MVP.
+2. **Evidence** — code, schemas, detector, ops files (Make/Docker/migrations). No invented numbers.
+3. **Bounded passes** — change → inspect once → fix once → confirm → stop.
+4. **Doc sync** — structural code change → patch ARCHITECTURE/surfaces/PRODUCT same turn ([doc-sync.md](reference/doc-sync.md)).
+5. **User language** — reports/docs in the user’s language; command names stay English (`/keel ship`).
+6. **App ≠ Keel trees** — do not smell-score PRODUCT/ARCHITECTURE/`.keel/**`/skill installs ([analysis-scope.md](reference/analysis-scope.md)). `doctor` = artifact drift only.
 
-1. Run `node <skill-base-dir>/scripts/detect.js --json .` once when evaluating or shipping if the tree is not huge; keep cwd at the user’s project. `<skill-base-dir>` is the folder containing this SKILL.md.
-2. If `PRODUCT.md` exists, read it. If `ARCHITECTURE.md` exists, read it. If `.keel/surfaces/` has a matching brief, read it. Do not invent missing sections.
-3. Load the request’s playbook from the Commands table. For undescribed new systems: **shape** then build, or follow [reference/new-work.md](reference/new-work.md). Narrow fixes may proceed; offer `init` if PRODUCT.md is missing.
-4. Immediately before editing implementation code, read [reference/eng-floor.md](reference/eng-floor.md). Skip for planning-only (`shape`, pure `critique`/`doctor` reporting). When mode is clear, also load the matching depth file: [mode-serve.md](reference/mode-serve.md) / [mode-process.md](reference/mode-process.md) / [mode-store.md](reference/mode-store.md).
-5. After a code-changing batch: run [reference/doc-sync.md](reference/doc-sync.md). If Make/Docker/migrations/deploy files exist and are relevant, skim [reference/ops-surfaces.md](reference/ops-surfaces.md).
-6. **Close with next commands only when issues remain.** Read [reference/next-commands.md](reference/next-commands.md). If this run produced pending issues, emit **Next commands** mapped 1:1 to those issues. If none, do not suggest commands (optional: `No pending issues — no next commands.`).
+## Load discipline (tokens)
 
-**Missing context:** New service/boundary/replacement architecture without PRODUCT.md → `init` first (or ask once). Scoped bugfixes may proceed.
+- Load **only** `reference/<command>.md` for the invoked command.
+- Load [eng-floor.md](reference/eng-floor.md) **only** when editing app code.
+- Load personas / scoring guide / mode depth **only** for full `critique` (see critique.md).
+- Do **not** preload critique+personas+modes+ops together on unrelated commands.
+- Shared close-out: [next-commands.md](reference/next-commands.md) — do not paste Close footers from playbooks.
 
-## How to engineer
+## Setup (short)
 
-- **The brief wins.** Honor pinned constraints even against fashionable patterns.
-- **Refinement preserves; redesign replaces.** Never ship-fix a discarded topology.
-- **Architecture authority is evidence, not a filename.**
+1. Cwd = user project. `<skill>` = folder with this SKILL.md.
+2. Read PRODUCT.md / ARCHITECTURE.md / matching `.keel/surfaces/` if present — do not invent sections.
+3. Route via Commands. Missing PRODUCT on new boundary → `init` (or ask once). Greenfield feature → `shape` then build ([new-work.md](reference/new-work.md) only if no command fits).
+4. Alias: `polish` → `ship`.
 
-## Modes
+## Modes (name only; depth on demand)
 
-- **Serve** — request/response; latency, authz, correctness → [mode-serve.md](reference/mode-serve.md)
-- **Process** — jobs/queues/batch; throughput, idempotency, poison → [mode-process.md](reference/mode-process.md)
-- **Store** — data plane; consistency, migrations, query cost → [mode-store.md](reference/mode-store.md)
-- **Integrate** — webhooks/partners/events; contracts, retries
-- **Control** — admin/orchestration; audit, least privilege
+Serve · Process · Store · Integrate · Control — depth files load from critique when scoring deep, not by default.
 
 ## Commands
 
-| Command | Category | Description | Reference |
+| Command | Does | Does not | Ref |
 |---|---|---|---|
-| `init` | Build | Capture durable product truth in PRODUCT.md | [reference/init.md](reference/init.md) |
-| `document` | Build | Generate ARCHITECTURE.md from code | [reference/document.md](reference/document.md) · agent: [agents/keel-documenter.md](agents/keel-documenter.md) |
-| `shape [feature]` | Build | Plan APIs/data/boundaries before code | [reference/shape.md](reference/shape.md) |
-| `extract [target]` | Build | Promote duplicated patterns to shared libs | [reference/extract.md](reference/extract.md) |
-| `onboard [target]` | Build | Activation: first tenant, keys, webhooks, empty states | [reference/onboard.md](reference/onboard.md) |
-| `adapt [target]` | Build | Multi-env / region / tenant / consumer adaptation | [reference/adapt.md](reference/adapt.md) |
-| `critique [target]` | Evaluate | Scored review: 8 grades /32, personas, trend | [reference/critique.md](reference/critique.md) · [personas.md](reference/personas.md) · [baselines.md](reference/baselines.md) |
-| `audit [target]` | Evaluate | Correctness, security, reliability, observability | [reference/audit.md](reference/audit.md) |
-| `cost [target]` | Evaluate | Cost drivers | [reference/cost.md](reference/cost.md) |
-| `secure [target]` | Evaluate | Threat sketch + authz matrix | [reference/secure.md](reference/secure.md) |
-| `observe [target]` | Evaluate | Telemetry gaps, cardinality, on-call signals | [reference/observe.md](reference/observe.md) |
-| `doctor` | Evaluate | Drift between Keel artifacts and repo (`--json`/`--fix`) | [reference/doctor.md](reference/doctor.md) |
-| `status [target]` | Evaluate | Critique/ship/detector pulse (read-only) | [reference/status.md](reference/status.md) |
-| `ship [target]` | Refine | Close critique backlog; production release gate | [reference/ship.md](reference/ship.md) |
-| `organize [target]` | Refine | Package boundaries, dependency direction | [reference/organize.md](reference/organize.md) |
-| `distill [target]` | Refine | Strip accidental complexity | [reference/distill.md](reference/distill.md) |
-| `harden [target]` | Refine | Timeouts, retries, idempotency, authz | [reference/harden.md](reference/harden.md) |
-| `migrate [target]` | Refine | Safe schema/API expand-contract | [reference/migrate.md](reference/migrate.md) |
-| `optimize [target]` | Fix | Hot paths, N+1, contention | [reference/optimize.md](reference/optimize.md) |
-| `clarify [target]` | Fix | Naming, contracts, errors, docs | [reference/clarify.md](reference/clarify.md) |
-| `load [target]` | Fix | Capacity, load model, backpressure | [reference/load.md](reference/load.md) |
-| `live` | Iterate | Probe running HTTP API (not browser) | [reference/live.md](reference/live.md) |
-| `hooks …` | System | Detector hook admin (edit + stop deep pass) | [reference/hooks.md](reference/hooks.md) |
-| `pin …` | System | `/audit`-style shims → `/keel audit` | `scripts/pin.js` |
+| `init` | Write PRODUCT.md | Rewrite ARCHITECTURE | [init.md](reference/init.md) |
+| `document` | Generate/refresh ARCHITECTURE from code | Patch one section after a fix (use doc-sync) | [document.md](reference/document.md) |
+| `shape` | ADR + surface before code | Implement the feature | [shape.md](reference/shape.md) |
+| `extract` | Promote ≥2 call-site dupes | Invent frameworks | [extract.md](reference/extract.md) |
+| `onboard` | Activation path (tenant/keys/webhooks) | UI onboarding | [onboard.md](reference/onboard.md) |
+| `adapt` | Multi-env/region/tenant/consumer | Schema expand/contract alone → `migrate` | [adapt.md](reference/adapt.md) |
+| `critique` | Score /32 + backlog + trend | Fix code (unless asked) | [critique.md](reference/critique.md) |
+| `audit` | Broad quality checklist | Deep authz matrix → `secure`; deep telemetry → `observe` | [audit.md](reference/audit.md) |
+| `secure` | Threat sketch + authz matrix | General reliability pass → `harden` | [secure.md](reference/secure.md) |
+| `observe` | Telemetry gaps on a path | HTTP probing → `live` | [observe.md](reference/observe.md) |
+| `cost` | Rank $ drivers (no fake bills) | Rewrite hot path → `optimize` | [cost.md](reference/cost.md) |
+| `doctor` | Artifact drift (`--json/--fix`) | App smell critique | [doctor.md](reference/doctor.md) |
+| `status` | Score/P0 pulse from snapshots | Drift checks → `doctor` | [status.md](reference/status.md) |
+| `ship` | Close critique P0/P1 + snapshot | Redesign topology → `shape` | [ship.md](reference/ship.md) |
+| `harden` | Timeouts/retries/idempotency/authz edges | Close whole critique backlog → `ship` | [harden.md](reference/harden.md) |
+| `organize` | Package/dep direction | Delete accidental complexity → `distill` | [organize.md](reference/organize.md) |
+| `distill` | Strip accidental complexity | Move shared helpers → `extract` | [distill.md](reference/distill.md) |
+| `migrate` | Safe schema/API evolve | Env/tenant matrix → `adapt` | [migrate.md](reference/migrate.md) |
+| `optimize` | Fix hot path / N+1 | Only rank costs → `cost` | [optimize.md](reference/optimize.md) |
+| `clarify` | Names/contracts/errors/docs | Behavior changes | [clarify.md](reference/clarify.md) |
+| `load` | Capacity / backpressure model | Micro-optimize one query → `optimize` | [load.md](reference/load.md) |
+| `live` | Probe running HTTP API | Add metrics → `observe` | [live.md](reference/live.md) |
+| `hooks` | Detector hook admin | | [hooks.md](reference/hooks.md) |
+| `pin` | `/audit` shim → `/keel audit` | | `scripts/pin.js` |
 
-Routing:
+Bare `/keel`: [routing.md](reference/routing.md) — recommend 2–3, never auto-run.
 
-- **No argument:** [reference/routing.md](reference/routing.md); never auto-run.
-- **Explicit/implied command:** load its reference. Alias: `polish` → `ship`. New feature without command → [new-work.md](reference/new-work.md).
-- **Otherwise:** general backend work under Setup + eng-floor.
+## Scripts
 
-**Detect:** `node <skill-base-dir>/scripts/detect.js [--json] [--explain] [--stack=node|python|go|ops] [path]` — exit 0 clean, 2 findings, 1 error. See [analysis-scope.md](reference/analysis-scope.md).
+```bash
+node <skill>/scripts/detect.js [--json] [--explain] [--stack=node|ops] [path]
+node <skill>/scripts/doctor.js [--json] [--fix]
+node <skill>/scripts/status.js [--json] [--detect] [path]
+node <skill>/scripts/live-api.js --base=URL [--path=/health]
+```
 
-**Doctor:** `node <skill-base-dir>/scripts/doctor.js [--json] [--fix]`
+## Close
 
-**Status:** `node <skill-base-dir>/scripts/status.js [--json] [--detect] [--slug=name] [path]`
-
-**Live:** `node <skill-base-dir>/scripts/live-api.js --base=URL [--path=/health]`
-
-**Close-out:** [reference/next-commands.md](reference/next-commands.md) — suggest `/keel …` only for pending issues from this run; if none, suggest nothing.
+Pending issues from **this** run → [next-commands.md](reference/next-commands.md) (2–3 max, issue-mapped).  
+None → no suggestions (optional: `No pending issues — no next commands.`).

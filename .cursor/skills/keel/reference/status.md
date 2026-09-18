@@ -1,6 +1,9 @@
 # status
 
-Read-only **backlog pulse** for a target: latest critique score, open P0/P1, ship closure, detector primary count. Does not edit application code.
+**Does:** score/P0 pulse from `.keel/critique` (+ optional detect).  
+**Does not:** artifact drift (→ `doctor`); full rescore (→ `critique`).
+
+Read-only **backlog pulse**.
 
 ## Flow
 
@@ -36,10 +39,3 @@ If no critique snapshot: say so and suggest `/keel critique <target>` only as th
 - Read-only. No eng-floor edits.
 - Do not re-score categories here — point to `critique` for a full refresh.
 - Language: user’s language for prose; keep command names English.
-
----
-
-## Close
-
-If open P0/P1 (or detector primaries) remain → **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If clean / closed with nothing pending: `No pending issues — no next commands.`

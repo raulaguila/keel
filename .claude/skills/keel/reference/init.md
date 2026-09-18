@@ -15,10 +15,3 @@ Capture durable product/system truth in `PRODUCT.md`. Do **not** invent architec
 Write the interview and `PRODUCT.md` in the **user’s language** (see SKILL.md). Section headings in the template may stay in English for schema stability, or be localized if the user prefers — body prose must match the user.
 - If PRODUCT.md already exists, show a diff of proposed updates and ask before overwriting.
 - Platform may be `web-api`, `worker`, `data`, `mobile-bff`, `adaptive`, or a short custom label — record what evidence supports.
-
----
-
-## Close
-
-If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`).
