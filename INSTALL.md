@@ -79,7 +79,7 @@ npx --yes github:raulaguila/keel install --providers=cursor --no-hooks
 | `gemini` | `.gemini/skills/keel` | `/keel` |
 | `copilot` | `.github/skills/keel` | `/keel` |
 | `continue` | `.continue/skills/keel` | `/keel` |
-| `cline` | `.cline/skills/keel` (+ `.clinerules/skills/keel`) | `/keel` |
+| `cline` | `.cline/skills/keel` | `/keel` |
 | `opencode` | `.opencode/skills/keel` | `/keel` |
 | `grok` | `.grok/skills/keel` | `/keel` |
 | … | see `--list-providers` | `/keel` |

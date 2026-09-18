@@ -58,9 +58,9 @@ export const PROVIDER_CATALOG = {
   },
   cline: {
     label: "Cline",
+    // Project skills live under .cline/skills only.
+    // Do not use .clinerules/skills — .clinerules is often a file (rules), not a directory.
     dir: (name) => `.cline/skills/${name}`,
-    // alternate project path Cline also discovers
-    extraDirs: (name) => [`.clinerules/skills/${name}`],
     invoke: (name) => `/${name}`,
   },
   kiro: {

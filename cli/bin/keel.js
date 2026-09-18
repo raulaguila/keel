@@ -17,8 +17,26 @@ const PKG_ROOT = path.resolve(__dirname, "../..");
 const SKILL_SRC = path.join(PKG_ROOT, "skill");
 const SKILL_NAME = "keel";
 
+function ensureDir(dir) {
+  const abs = path.resolve(dir);
+  for (let p = abs; p !== path.dirname(p); p = path.dirname(p)) {
+    try {
+      if (!fs.statSync(p).isDirectory()) {
+        const rel = path.relative(process.cwd(), p) || p;
+        throw new Error(
+          `Cannot create ${path.relative(process.cwd(), abs) || abs}: ${rel} exists as a file`,
+        );
+      }
+    } catch (e) {
+      if (e.code === "ENOENT") continue;
+      throw e;
+    }
+  }
+  fs.mkdirSync(abs, { recursive: true });
+}
+
 function cpDir(src, dest) {
-  fs.mkdirSync(dest, { recursive: true });
+  ensureDir(dest);
   for (const ent of fs.readdirSync(src, { withFileTypes: true })) {
     const s = path.join(src, ent.name);
     const d = path.join(dest, ent.name);
