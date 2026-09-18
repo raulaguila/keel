@@ -8,14 +8,15 @@ Next commands exist to **act on issues already reported in this run** — not to
 2. Emit **Next commands** only when that list is non-empty.
 3. If there are **no pending issues**, do **not** suggest next commands. Optionally one quiet line: `No pending issues — no next commands.` Do not recommend `critique` / `doctor` / `ship` just to fill space.
 4. When emitting, list **2–3** items max (or fewer if fewer issues). Priority order = severity then user preference.
-5. Each line must cite the issue it closes:
+5. Each line must cite the issue it closes, in the **user’s language** for the reason text:
    ```
-   1. `/keel <command> [scope]` — closes [P1] <issue title or path>
+   1. `/keel <command> [scope]` — fecha [P1] <título da issue>
    ```
+   Command names stay English (`harden`, `ship`, …).
 6. Only recommend commands from the SKILL.md Commands table (plus `hooks`).
 7. **Never auto-run** unless the user explicitly asks to continue / run all / run #1.
-8. After the list (only when non-empty):
-   > You can ask me to run these one at a time, all at once, or in another order.
+8. After the list (only when non-empty), a short close line **in the user’s language**, e.g.:
+   > Você pode pedir para eu rodar um por um, todos de uma vez, ou em outra ordem.
 
 ## What counts as a pending issue
 

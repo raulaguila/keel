@@ -4,6 +4,10 @@ Resolve one stable target (repo root, service, module, API surface, or path). Pr
 
 Chat report is the primary deliverable. Also write `.keel/critique/<timestamp>__<slug>.md` when the filesystem allows.
 
+## Language
+
+Write the entire critique report (scores commentary, impression, issues, persona red flags, questions, Next commands) in the **user’s language**. Keep category names in the score table stable (English labels OK for comparability) but explain Key Issue and all narrative in the user’s language.
+
 ## Hard invariants
 
 - **Assessment A** (persona + category judgment) and **Assessment B** (deterministic evidence) are both required.
@@ -131,17 +135,17 @@ If <3 Priority Issues: print `Questions skipped: <n> priority issues`.
 Load [next-commands.md](next-commands.md).
 
 - Filter Priority Issues to the chosen scope.
-- **If zero remain:** `No pending issues — no next commands.` Do not invent filler.
-- **If some remain:** each Next command closes a **named** issue:
+- **If zero remain:** `No pending issues — no next commands.` (or the equivalent in the user’s language). Do not invent filler.
+- **If some remain:** each Next command closes a **named** issue; reason text in the **user’s language**:
 
 #### Next commands
 
-1. `/keel harden checkout` — closes [P0] no timeout on payments client
-2. `/keel secure checkout` — closes [P1] IDOR on GET /invoices/:id
+1. `/keel harden checkout` — fecha [P0] timeout ausente no client de payments
+2. `/keel secure checkout` — fecha [P1] IDOR em GET /invoices/:id
 
-> You can ask me to run these one at a time, all at once, or in another order.
+> Você pode pedir para eu rodar um por um, todos de uma vez, ou em outra ordem.
 
-Only add `/keel ship` or re-`critique` when they close a remaining named item.
+(Use the user’s language for that closing line too.)
 
 ---
 

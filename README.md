@@ -48,6 +48,8 @@ Providers: `cursor`, `claude`, `agents`/`codex` via `keel install --providers=â€
 
 Next commands only when the run left pending issues â€” each suggestion closes a named issue. If clean, no suggestions.
 
+Documentation and reports are written in the **user's language**; command names stay in English (`/keel ship`).
+
 ## License
 
 Apache-2.0

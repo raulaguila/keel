@@ -9,6 +9,7 @@ Core principles:
 - Go all out on correctness and operability. Incomplete error paths are not “MVP.”
 - Prefer evidence over vibes: code, schemas, traces, plans, bills — invent no SLOs, QPS, or budgets.
 - Verify in bounded passes: change → inspect once (tests + static signals + one runtime path) → fix in one batch → confirm once → stop. Open-ended self-QA burns money.
+- **User language.** Write all Keel-facing prose in the **user’s language** (the language of their messages in this chat): `PRODUCT.md`, `ARCHITECTURE.md`, surface briefs, critique/audit/ship reports, Next commands, questions, and commit/PR summaries you draft for them. Keep **command names**, file paths, code identifiers, HTTP status codes, and rule ids in their original form (`/keel ship`, `eng-floor`, `empty-catch`). If the user’s language is ambiguous, ask once; default to the language of the latest user message.
 
 ## Setup
 

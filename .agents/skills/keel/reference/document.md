@@ -14,9 +14,9 @@ Does not rewrite PRODUCT.md. Does not invent product SLOs.
 6. Ask the user to confirm descriptive language for consistency model, failure domains, and any “sacred” invariants.
 7. Refuse silent overwrite of a rich existing ARCHITECTURE.md — propose a merge plan.
 
-## Anti-patterns
+## Language
 
-- Drawing target architecture as if it were current.
+Write `ARCHITECTURE.md` prose in the **user’s language** (see SKILL.md). Keep code symbols, package paths, and protocol names unchanged.
 - Copying blog-standard layers the repo does not use.
 - Filling cost/SLO sections with made-up numbers (point to PRODUCT.md or `Unknown`).
 

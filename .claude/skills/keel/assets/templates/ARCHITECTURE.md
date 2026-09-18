@@ -1,6 +1,7 @@
 # Architecture
 
 <!-- keel:architecture-schema 1 -->
+<!-- Write body sections in the user's language; keep paths/symbols as in code. -->
 
 ## Overview
 

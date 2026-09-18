@@ -22,4 +22,4 @@ Capacity and load-test design: backpressure, shedding, and evidence-based limits
 ## Close
 
 If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
-If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`).
+If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`). Prose in the **user's language** (SKILL.md).

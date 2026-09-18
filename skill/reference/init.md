@@ -10,9 +10,9 @@ Capture durable product/system truth in `PRODUCT.md`. Do **not** invent architec
 4. Never invent SLOs, QPS, cost budgets, compliance regimes, or customer counts. If unknown, write `Unknown — confirm before designing to that constraint.`
 5. Recommend next step: usually `document` if code exists, else `shape` for greenfield.
 
-## Rules
+## Language
 
-- PRODUCT.md is strategic. No folder trees, ORM picks, or sequence diagrams here.
+Write the interview and `PRODUCT.md` in the **user’s language** (see SKILL.md). Section headings in the template may stay in English for schema stability, or be localized if the user prefers — body prose must match the user.
 - If PRODUCT.md already exists, show a diff of proposed updates and ask before overwriting.
 - Platform may be `web-api`, `worker`, `data`, `mobile-bff`, `adaptive`, or a short custom label — record what evidence supports.
 

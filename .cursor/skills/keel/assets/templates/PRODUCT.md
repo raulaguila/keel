@@ -1,6 +1,7 @@
 # Product
 
 <!-- keel:product-schema 1 -->
+<!-- Write body sections in the user's language. -->
 
 ## Platform
 

@@ -15,9 +15,9 @@ Plan UX-of-the-system: APIs, data, boundaries, and failure modes **before** writ
 4. Prefer the **smallest** topology that meets PRODUCT constraints. Justify every new moving part.
 5. Only after user acceptance: write/update a surface brief under `.keel/surfaces/` and then implement (or hand off). Load [eng-floor.md](eng-floor.md) before code.
 
-## Output shape
+## Language
 
-Use a short design note (not a novel): Context → Options (2 max) → Recommendation → Contracts → Risks → Open questions.
+Design notes, options, and open questions in the **user’s language**. API field names and status codes stay as in the contract.
 
 ---
 
