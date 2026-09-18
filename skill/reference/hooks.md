@@ -19,3 +19,9 @@ Manage the Keel design/engineering detector hook for this project.
 - **reset** — clear detector ignores (ask once).
 
 Mechanical findings only. Judgment stays in eng-floor + critique.
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

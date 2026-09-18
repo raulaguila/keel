@@ -28,3 +28,7 @@ Recommend **2–3** next commands with one-line reasons, then list the Commands 
 Optional: run `node <skill>/scripts/detect.js --json` on git-dirty backend files and fold primary hits into recommendations.
 
 If git dirty files point at one module, scope commands to that path.
+
+## After any recommendation menu
+
+When the user picks a command and it finishes, that command must still close with [next-commands.md](next-commands.md).

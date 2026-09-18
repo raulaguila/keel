@@ -15,3 +15,9 @@ Promote duplicated backend patterns into a shared module/platform library withou
 - Extracting with a single call site
 - Abstracting before the second use exists
 - New DI/container ceremony unless the stack already uses it
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

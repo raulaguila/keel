@@ -25,3 +25,9 @@ Report (and optionally repair) drift between Keel artifacts and repository reali
 ## Output
 
 End with recommended commands (`init`, `document`, `critique`, `hooks`).
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

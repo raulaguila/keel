@@ -17,3 +17,9 @@ Plan and implement **safe schema/API evolution**: expand/contract, dual-write wi
 - Big-bang renames on hot tables without a window
 - Destructive contract deploys without a consumer inventory
 - Inventing downtime windows the user did not approve
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

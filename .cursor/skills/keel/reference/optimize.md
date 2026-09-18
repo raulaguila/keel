@@ -15,3 +15,9 @@ Improve performance of a **measured or clearly evidenced** hot path. No speculat
 - Caching as first move without a keying/invalidations story
 - Denormalizing everything “for speed”
 - Optimizing cold admin paths when Serve-mode APIs are on fire
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

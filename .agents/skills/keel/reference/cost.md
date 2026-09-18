@@ -20,3 +20,9 @@ Find and rank **cost drivers**: query, compute, storage, egress, third-party API
 - “Move to microservices to save money” without evidence
 - Premature sharding
 - Invented unit prices — ask for rate card or use relative comparisons only
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

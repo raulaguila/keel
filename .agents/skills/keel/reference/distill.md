@@ -21,3 +21,9 @@ Strip accidental complexity. Behavior and contracts stay; ceremony goes.
 
 - Distilling by rewriting into a new architecture fashion
 - Removing error handling or authz as “noise”
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

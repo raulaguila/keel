@@ -13,3 +13,9 @@ Improve names, API contracts, error messages, and operator docs so humans and ag
 
 - Renaming everything in one PR
 - Clever internal jargon that doesn’t match the domain
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

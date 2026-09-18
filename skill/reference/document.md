@@ -19,3 +19,9 @@ Does not rewrite PRODUCT.md. Does not invent product SLOs.
 - Drawing target architecture as if it were current.
 - Copying blog-standard layers the repo does not use.
 - Filling cost/SLO sections with made-up numbers (point to PRODUCT.md or `Unknown`).
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

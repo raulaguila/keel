@@ -18,3 +18,9 @@ Plan UX-of-the-system: APIs, data, boundaries, and failure modes **before** writ
 ## Output shape
 
 Use a short design note (not a novel): Context → Options (2 max) → Recommendation → Contracts → Risks → Open questions.
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

@@ -22,3 +22,9 @@ Resolve target paths. Read PRODUCT.md / ARCHITECTURE.md for constraints. Load [e
 - Do not expand into greenfield architecture unless the audit proves the topology is unsafe.
 - Security P0s: report before cosmetic nits.
 - If the user only asked for report, do not edit.
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

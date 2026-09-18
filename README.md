@@ -46,6 +46,8 @@ docs/cases/      # before/after narrative
 
 Providers: `cursor`, `claude`, `agents`/`codex` via `keel install --providers=…`.
 
+Every command ends with **Next commands** (2–3 `/keel …` suggestions), like Impeccable.
+
 ## License
 
 Apache-2.0

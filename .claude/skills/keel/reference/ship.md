@@ -37,3 +37,9 @@ Make the target **safe to deploy**: close P0/P1 from critique, confirm failure m
 - If topology/concept is wrong → stop; recommend `shape` / redesign — do not “ship” a discarded design.
 - Bound the pass: one inspect → one fix batch → one confirm → stop.
 - Language: prefer *ship*, *release gate*, *preflight*, *production-ready* — avoid *polish*, *pixel*, *visual*.
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

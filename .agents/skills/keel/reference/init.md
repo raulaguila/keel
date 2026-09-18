@@ -15,3 +15,9 @@ Capture durable product/system truth in `PRODUCT.md`. Do **not** invent architec
 - PRODUCT.md is strategic. No folder trees, ORM picks, or sequence diagrams here.
 - If PRODUCT.md already exists, show a diff of proposed updates and ask before overwriting.
 - Platform may be `web-api`, `worker`, `data`, `mobile-bff`, `adaptive`, or a short custom label — record what evidence supports.
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

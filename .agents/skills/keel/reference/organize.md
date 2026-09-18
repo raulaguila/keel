@@ -15,3 +15,9 @@ Improve package/module boundaries and dependency direction without changing prod
 - Dependency rule is stated and greppable
 - No new cycles introduced
 - Entrypoints stay thin; domain logic is not buried in transport adapters
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

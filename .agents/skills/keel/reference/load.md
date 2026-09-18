@@ -16,3 +16,9 @@ Capacity and load-test design: backpressure, shedding, and evidence-based limits
 - Load testing prod without explicit approval
 - Fabricating QPS capacity numbers
 - Horizontal scale as first recommendation without a bottleneck
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

@@ -21,3 +21,9 @@ Close observability gaps on a target path: logs, metrics, traces, cardinality, a
 - High-cardinality labels (user id, email, full URL) on metrics
 - Logging bodies that may contain secrets/PII
 - Inventing SLO targets not in PRODUCT.md
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

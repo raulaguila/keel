@@ -112,11 +112,38 @@ What Assessment B confirmed / contradicted. Missing detector = say so.
 
 ### 8. Recommended next commands
 
-2–3 `/keel …` lines the user can run next, tied to the lowest scores. Prefer `/keel ship` when P0/P1 exist and the goal is release.
+Emit **now only a teaser** (optional 1-liner that questions come next). Do **not** dump the full action plan before Ask the User.
 
-### 9. Ask the user (LAST)
+### 9. Ask the user (LAST in this message)
 
-One focused question: which issue to fix first, or whether to deep-dive a weak category (`/keel cost`, `/keel harden`, …).
+**Required** when there are ≥3 Priority Issues. Same message as the report; questions after the report body.
+
+Ask 2–4 targeted questions with concrete options tied to findings (not generic audience questions):
+
+1. **Priority** — which category/issue cluster first?
+2. **Scope** — top 3 only / all P0–P1 / everything?
+3. **Constraints** — anything off-limits?
+4. Optional: intentional tradeoff (e.g. “shared DB — keep or split?”)
+
+If <3 Priority Issues: print `Questions skipped: <n> priority issues` and go straight to Next commands using defaults from [next-commands.md](next-commands.md).
+
+### 10. After the user answers — Next commands
+
+Load [next-commands.md](next-commands.md). Present:
+
+#### Next commands
+
+1. `/keel …` — …
+2. `/keel …` — …
+3. `/keel ship <target>` — close remaining release-gate items (if any fixes recommended)
+
+Then:
+
+> You can ask me to run these one at a time, all at once, or in another order.
+>
+> Re-run `/keel critique` after fixes to see the score/trend improve.
+
+Map each Priority Issue in scope to a command. Prefer user priority order, then severity.
 
 ---
 

@@ -18,3 +18,9 @@ Production readiness for failure: timeouts, retries, idempotency, authz edges, d
 - [ ] Poison messages / DLQ story for consumers
 - [ ] Partial failure behavior is defined (fail closed vs degraded)
 - [ ] Backpressure or shedding under overload (at least a plan)
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.

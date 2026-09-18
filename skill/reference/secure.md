@@ -21,3 +21,9 @@ Focused security pass: threat sketch, authz matrix, secrets, and abuse paths —
 
 - Security theater (random middleware without enforcement at data access)
 - Disabling auth “temporarily” in committed code
+
+---
+
+## Close
+
+End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.
