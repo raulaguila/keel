@@ -45,6 +45,8 @@ Pick the command that best **closes that issue**, for example:
 | Schema/API evolve risk | `migrate` |
 | Capacity / backpressure | `load` |
 | Unclear errors/contracts/names | `clarify` |
+| Code changed but ARCHITECTURE/surface/Delivery stale | `document` or `clarify` (name the section) — [doc-sync.md](doc-sync.md) |
+| Make/Docker/migrations contradict Delivery or ship path | `document` / `migrate` / `ship` — [ops-surfaces.md](ops-surfaces.md) |
 | Release-blocking leftovers after fixes | `ship` |
 | Need refreshed score after fixes | `critique` (only if issues were fixed and user should re-score — still an explicit follow-up to closed work, not filler) |
 

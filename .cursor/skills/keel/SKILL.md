@@ -7,8 +7,9 @@ This skill gives you permission and procedure to practice out-of-distribution **
 
 Core principles:
 - Go all out on correctness and operability. Incomplete error paths are not “MVP.”
-- Prefer evidence over vibes: code, schemas, traces, plans, bills — invent no SLOs, QPS, or budgets.
+- Prefer evidence over vibes: code, schemas, traces, plans, bills — invent no SLOs, QPS, or budgets. Read **ops surfaces** (Makefile, Docker/Compose, migrations, deploy manifests) when present — [reference/ops-surfaces.md](reference/ops-surfaces.md).
 - Verify in bounded passes: change → inspect once (tests + static signals + one runtime path) → fix in one batch → confirm once → stop. Open-ended self-QA burns money.
+- **Doc sync.** If this run changed boundaries, contracts, data, failure modes, observability, or delivery, update `ARCHITECTURE.md` / `.keel/surfaces/` / `PRODUCT.md` in the **same pass** when needed — [reference/doc-sync.md](reference/doc-sync.md). Stale authority is a pending issue.
 - **User language.** Write all Keel-facing prose in the **user’s language** (the language of their messages in this chat): `PRODUCT.md`, `ARCHITECTURE.md`, surface briefs, critique/audit/ship reports, Next commands, questions, and commit/PR summaries you draft for them. Keep **command names**, file paths, code identifiers, HTTP status codes, and rule ids in their original form (`/keel ship`, `eng-floor`, `empty-catch`). If the user’s language is ambiguous, ask once; default to the language of the latest user message.
 - **Keel-owned paths are not the app.** Unless the user explicitly targets them, do not run smell analysis, critique scoring, or detector judgment on: `PRODUCT.md`, `ARCHITECTURE.md`, `.keel/**`, `.cursor/skills/keel/**`, `.claude/skills/keel/**`, `.agents/skills/keel/**`, or this skill’s `reference/` / `assets/`. Those files are context or meta; application code lives elsewhere (`src/`, `app/`, services, …). `/keel doctor` only **checks drift** of artifacts against the app — it does not critique artifact prose.
 
@@ -18,7 +19,8 @@ Core principles:
 2. If `PRODUCT.md` exists, read it. If `ARCHITECTURE.md` exists, read it. If `.keel/surfaces/` has a matching brief, read it. Do not invent missing sections.
 3. Load the request’s playbook from the Commands table. For undescribed new systems: **shape** then build. Narrow fixes may proceed; offer `init` if PRODUCT.md is missing.
 4. Immediately before editing implementation code, read [reference/eng-floor.md](reference/eng-floor.md). Skip for planning-only (`shape`, pure `critique`/`doctor` reporting).
-5. **Close with next commands only when issues remain.** Read [reference/next-commands.md](reference/next-commands.md). If this run produced pending issues, emit **Next commands** mapped 1:1 to those issues. If none, do not suggest commands (optional: `No pending issues — no next commands.`).
+5. After a code-changing batch: run [reference/doc-sync.md](reference/doc-sync.md). If Make/Docker/migrations/deploy files exist and are relevant, skim [reference/ops-surfaces.md](reference/ops-surfaces.md).
+6. **Close with next commands only when issues remain.** Read [reference/next-commands.md](reference/next-commands.md). If this run produced pending issues, emit **Next commands** mapped 1:1 to those issues. If none, do not suggest commands (optional: `No pending issues — no next commands.`).
 
 **Missing context:** New service/boundary/replacement architecture without PRODUCT.md → `init` first (or ask once). Scoped bugfixes may proceed.
 

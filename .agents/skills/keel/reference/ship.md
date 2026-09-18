@@ -16,9 +16,10 @@ Make the target **safe to deploy**: close P0/P1 from critique, confirm failure m
 3. Triage **P0 → P1 → P2**. Skip P3 unless explicitly requested.
 4. Fix in one batch at the narrowest correct level.
 5. Run `scripts/keel detect` / `detect.js` on touched paths; clear new primary findings.
-6. Re-score lightly only the categories you changed; do not invent a full second critique unless asked.
-7. **Close the snapshot** (required when filesystem allows) — see [Closing the critique snapshot](#closing-the-critique-snapshot).
-8. Recommend `/keel critique <target>` to refresh the official score + trend **only if** fixes landed and a fresh score is the pending follow-up (issue-mapped).
+6. **Doc sync** ([doc-sync.md](doc-sync.md)): patch ARCHITECTURE / surfaces if the fix changed contracts, failure, or delivery. Skim [ops-surfaces.md](ops-surfaces.md) when Make/Docker/migrations are part of the release path.
+7. Re-score lightly only the categories you changed; do not invent a full second critique unless asked.
+8. **Close the snapshot** (required when filesystem allows) — see [Closing the critique snapshot](#closing-the-critique-snapshot).
+9. Recommend `/keel critique <target>` to refresh the official score + trend **only if** fixes landed and a fresh score is the pending follow-up (issue-mapped).
 
 ## Ship checklist (batch)
 
@@ -29,6 +30,7 @@ Make the target **safe to deploy**: close P0/P1 from critique, confirm failure m
 - [ ] No new detector primary findings on touched files
 - [ ] Observability still enough for on-call on this path
 - [ ] Wire contracts unchanged unless user approved
+- [ ] Docs synced if structural (ARCHITECTURE / surface / Delivery)
 
 ## Closing the critique snapshot
 

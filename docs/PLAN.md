@@ -7,6 +7,8 @@ Implemented relative to the original plan:
 | Skill router + eng-floor + PRODUCT/ARCHITECTURE | done |
 | Scored critique + 6 personas + baselines + focus + trend | done |
 | Assessment B evidence map + analysis-scope | done |
+| Doc sync after code changes | done |
+| Ops surfaces (Make/Docker/migrations) as evidence | done |
 | `shape` ADR + `.keel/surfaces/` | done |
 | Commands | full set including `ship`, `status`, scored `critique`, detect, hooks |
 | Close-out | next `/keel` only for pending issues (issue-mapped); omit when clean |

@@ -14,6 +14,8 @@ Checks on the **built** result (or the concrete change set), not intentions. Bat
 - **Data changes:** migrations are expand/contract or have a documented rollback; dual-write windows are explicit.
 - **Observability:** structured logs with correlation ids; no secrets/PII in logs; critical paths have metrics or traces named in ARCHITECTURE.md conventions.
 - **Evidence:** claims about latency, QPS, or cost cite PRODUCT.md, measurements, or are labeled assumptions.
+- **Doc sync:** if boundaries, contracts, data, failure, observe, or delivery changed, patch `ARCHITECTURE.md` / surface briefs / PRODUCT facts in this same pass — [doc-sync.md](doc-sync.md). Structural change with no doc update = incomplete batch.
+- **Ops surfaces:** when Makefile, Dockerfile/Compose, or migrations exist for the touched path, confirm Delivery still matches how the change is built/migrated/run — [ops-surfaces.md](ops-surfaces.md).
 
 ## Refuse
 

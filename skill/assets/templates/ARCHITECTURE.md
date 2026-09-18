@@ -33,7 +33,7 @@
 
 ## Delivery
 
-<!-- migrations, deploy, feature flags, rollback -->
+<!-- migrations tool + path; Makefile targets (test/migrate/run); Docker/Compose; CI deploy; feature flags; rollback -->
 
 ## Cost hotspots
 

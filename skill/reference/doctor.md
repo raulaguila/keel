@@ -37,6 +37,8 @@ Application source (`src/`, `app/`, `services/`, …) is used only as **evidence
 | Missing ARCHITECTURE.md while **application** backend code exists | high | no — suggest `document` |
 | Schema stamp missing/outdated (`keel:product-schema` / `keel:architecture-schema`) | med | yes — add stamp if content otherwise OK |
 | ARCHITECTURE Boundaries list packages/paths that no longer exist | med | no — list stale paths |
+| App has `migrations/` (or prisma/flyway/…) but ARCHITECTURE **Delivery** is missing/empty | med | no — suggest `document` or surgical Delivery edit ([doc-sync.md](doc-sync.md), [ops-surfaces.md](ops-surfaces.md)) |
+| `Makefile` / `Dockerfile` exists but Delivery never mentions how to build/run/migrate | low | no — suggest Delivery sync |
 | `.keel/config.json` missing or invalid | low | yes — write defaults |
 | Critique snapshots whose target path is gone | low | report only |
 | Hook installed but skill `scripts/hook.js` / `detect.js` missing | high | suggest `keel install` |

@@ -65,6 +65,10 @@ Providers: `cursor`, `claude`, `agents`/`codex` via `keel install --providers=�
 
 Next commands só quando a rodada deixou issues pendentes — cada sugestão fecha uma issue nomeada. Se limpo, sem sugestões.
 
+**Doc sync:** mudança estrutural de código → atualizar `ARCHITECTURE.md` / surfaces / Delivery na mesma passagem ([skill/reference/doc-sync.md](skill/reference/doc-sync.md)).
+
+**Ops surfaces:** Makefile, Docker/Compose, migrations e deploy entram no Assessment B e no Delivery ([skill/reference/ops-surfaces.md](skill/reference/ops-surfaces.md)) — evidência, não um motor separado.
+
 Documentação e relatórios no **idioma do usuário**; nomes de comando em inglês (`/keel ship`).
 
 ## Testes

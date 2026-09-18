@@ -10,7 +10,7 @@ Plan and implement **safe schema/API evolution**: expand/contract, dual-write wi
 3. Call out lock risks, long backfills, and dual-running versions.
 4. Implement migration files + application dual-read/write as needed; keep steps shippable independently.
 5. Document rollback: what is safe to revert at each step.
-6. Update ARCHITECTURE.md Delivery section.
+6. Update ARCHITECTURE.md Delivery section ([doc-sync.md](doc-sync.md)). Align Make/CI/Docker migrate targets with reality ([ops-surfaces.md](ops-surfaces.md)).
 
 ## Refuse
 

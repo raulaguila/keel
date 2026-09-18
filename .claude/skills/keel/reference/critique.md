@@ -51,10 +51,11 @@ B must be **file-backed**. Prefer citations over vibes.
    ```
    Pass `--stack` when the repo language is clear (quieter; skips other packs). Use `--explain` when folding remediation into Evidence notes.
 2. Apply [stack-rubrics.md](stack-rubrics.md) for the repo’s language — list **concrete hits** with path:line when possible.
-3. Also gather at least **two** of: failure/authz tests; import direction; pool/timeout config; migration safety signals; one real request/job path trace in code.
-4. For each Priority Issue you will keep in synthesis, attach **evidence**: detector rule id and/or file:line, or “judgment-only (A)” if B found nothing. Do not invent detector hits.
+3. Skim [ops-surfaces.md](ops-surfaces.md): Makefile / Docker / Compose / migrations / deploy when present. One-line **Ops:** blurb in Evidence notes.
+4. Also gather at least **two** of: failure/authz tests; import direction; pool/timeout config; migration safety signals; one real request/job path trace in code.
+5. For each Priority Issue you will keep in synthesis, attach **evidence**: detector rule id and/or file:line, or “judgment-only (A)” if B found nothing. Do not invent detector hits.
 
-Return: detector JSON summary (counts by rule + primaryCount), rubric hits, evidence map (issue → proof), false-positive notes. If detector missing, say so — do not pretend.
+Return: detector JSON summary (counts by rule + primaryCount), rubric hits, ops blurb, evidence map (issue → proof), false-positive notes. If detector missing, say so — do not pretend.
 
 ## Synthesis — report structure
 

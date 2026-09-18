@@ -6,6 +6,8 @@ Shared rules for `critique`, `audit`, `cost`, `secure`, `observe`, `optimize`, `
 
 Prefer: `src/`, `app/`, `apps/*/src`, `services/`, `internal/`, `pkg/`, `lib/` (when app code), `cmd/`, workers, API handlers, migrations for the **product**.
 
+Also read as **ops evidence** (not smell-targets unless user says so): `Makefile`, `Dockerfile*`, `docker-compose*.yml`, `compose*.yaml`, deploy manifests — see [ops-surfaces.md](ops-surfaces.md).
+
 ## Keel-owned / harness (do not analyze as app code)
 
 Unless the user **explicitly** names them as the target:
