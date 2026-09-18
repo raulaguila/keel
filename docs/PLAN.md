@@ -1,4 +1,4 @@
-# Keel — status (v0.2)
+# Keel — status (v0.3)
 
 Implemented relative to the original plan:
 
@@ -6,12 +6,16 @@ Implemented relative to the original plan:
 |------|--------|
 | Skill router + eng-floor + PRODUCT/ARCHITECTURE | done |
 | Scored critique + 6 personas + baselines + focus + trend | done |
-| Commands | full set including `ship`, scored `critique`, detect, hooks |
-| Close-out | next `/keel` only for pending issues (issue-mapped); omit when clean ([next-commands.md](skill/reference/next-commands.md)) |
-| Detector MVP (`skill/scripts/detect.js`, ~18 rules) | done |
+| Assessment B evidence map + analysis-scope | done |
+| `shape` ADR + `.keel/surfaces/` | done |
+| Commands | full set including `ship`, `status`, scored `critique`, detect, hooks |
+| Close-out | next `/keel` only for pending issues (issue-mapped); omit when clean |
+| Detector (`detect.js`) | quieter HTTP timeouts, `--explain`, `--stack`, severityOverrides |
+| `ship` closes critique snapshots (`closed_by: ship`) | done |
+| `status` pulse CLI + playbook | done |
 | Cursor `afterFileEdit` hook | done |
 | `keel install` CLI (cursor/claude/agents) | done |
-| Oracle fixture `tests/fixtures/smelly-api` | done |
+| Oracle + smoke fixtures | done |
 | Case study `docs/cases/smelly-api.md` | done |
 | Stack rubrics | done |
 | Rust engine / live mode / 60+ rules | deferred |
@@ -20,12 +24,12 @@ Implemented relative to the original plan:
 
 ```bash
 node cli/bin/keel.js install --providers=cursor
-# keel install --providers=cursor,claude,agents
 ```
 
 ## Verify
 
 ```bash
-npm run test:detector
-node skill/scripts/detect.js --json tests/fixtures/smelly-api
+npm test
+node skill/scripts/detect.js --json --explain tests/fixtures/smelly-api
+node skill/scripts/status.js --help
 ```

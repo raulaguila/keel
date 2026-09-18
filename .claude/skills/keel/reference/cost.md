@@ -4,8 +4,8 @@ Find and rank **cost drivers**: query, compute, storage, egress, third-party API
 
 ## Flow
 
-1. Read PRODUCT.md for budget / scale assumptions (or mark Unknown).
-2. Map the target’s runtime path: who calls what, how often (evidence from code, jobs schedules, metrics if present).
+1. Read PRODUCT.md for budget / scale assumptions (or mark Unknown). Scope to app paths only ([analysis-scope.md](analysis-scope.md)).
+2. Map the target’s runtime path: who calls what, how often (evidence from code, jobs schedules, metrics if present). Optional detector: `--json` on the app target for unbounded queries / fan-out rules.
 3. Inspect:
    - DB: N+1, missing filters, SELECT *, large offsets, unbounded exports, chatty ORM
    - Compute: hot loops, unnecessary serialization, oversized payloads, sync work on request path

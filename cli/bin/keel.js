@@ -117,13 +117,20 @@ function detect(args) {
   process.exit(r.status ?? 1);
 }
 
+function status(args) {
+  const script = path.join(SKILL_SRC, "scripts", "status.js");
+  const r = spawnSync(process.execPath, [script, ...args], { stdio: "inherit", cwd: process.cwd() });
+  process.exit(r.status ?? 1);
+}
+
 function help() {
   console.log(`keel — backend craft skill CLI
 
 Usage:
   keel install [--providers=cursor,claude,agents] [--no-hooks]
   keel update   (alias of install)
-  keel detect [--json] [path...]
+  keel detect [--json] [--explain] [--stack=node,python] [--min-severity=p1] [path...]
+  keel status [--json] [--detect] [--slug=name] [path]
   keel help
 `);
 }
@@ -136,6 +143,9 @@ switch (cmd) {
     break;
   case "detect":
     detect(rest);
+    break;
+  case "status":
+    status(rest);
     break;
   case "help":
   case undefined:

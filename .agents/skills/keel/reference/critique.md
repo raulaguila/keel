@@ -4,6 +4,8 @@ Resolve one stable target (repo root, service, module, API surface, or path). Pr
 
 Chat report is the primary deliverable. Also write `.keel/critique/<timestamp>__<slug>.md` when the filesystem allows.
 
+**Scope:** analyze application targets only — see [analysis-scope.md](analysis-scope.md). Never score Keel-owned paths as the product.
+
 ## Language
 
 Write the entire critique report (scores commentary, impression, issues, persona red flags, questions, Next commands) in the **user’s language**. Keep category names in the score table stable (English labels OK for comparability) but explain Key Issue and all narrative in the user’s language.
@@ -40,15 +42,19 @@ Return: mode, personas used, category scores with one-line key issue each, 2–3
 
 ## Assessment B — Evidence
 
-1. Run the bundled detector when present:
+B must be **file-backed**. Prefer citations over vibes.
+
+1. Run the bundled detector when present (app path only — [analysis-scope.md](analysis-scope.md)):
    ```bash
-   node <skill-base-dir>/scripts/detect.js --json <target>
+   node <skill-base-dir>/scripts/detect.js --json [--explain] [--stack=<lang>] <target>
    # or: <skill-base-dir>/scripts/keel detect --json <target>
    ```
-2. Apply [stack-rubrics.md](stack-rubrics.md) for the repo’s language.
-3. Also gather: failure/authz tests; import direction; pool/timeout config; migration safety signals.
+   Pass `--stack` when the repo language is clear (quieter; skips other packs). Use `--explain` when folding remediation into Evidence notes.
+2. Apply [stack-rubrics.md](stack-rubrics.md) for the repo’s language — list **concrete hits** with path:line when possible.
+3. Also gather at least **two** of: failure/authz tests; import direction; pool/timeout config; migration safety signals; one real request/job path trace in code.
+4. For each Priority Issue you will keep in synthesis, attach **evidence**: detector rule id and/or file:line, or “judgment-only (A)” if B found nothing. Do not invent detector hits.
 
-Return: detector JSON summary (counts by rule), rubric hits, false-positive notes. If detector missing, say so — do not pretend.
+Return: detector JSON summary (counts by rule + primaryCount), rubric hits, evidence map (issue → proof), false-positive notes. If detector missing, say so — do not pretend.
 
 ## Synthesis — report structure
 
@@ -112,7 +118,7 @@ One short subsection per selected persona. Specific failures only (see personas.
 
 ### 7. Evidence notes
 
-What Assessment B confirmed / contradicted. Missing detector = say so.
+What Assessment B confirmed / contradicted. Missing detector = say so. Include a short **evidence map**: each Priority Issue → `ruleId` / `path:line` / `judgment-only`.
 
 ### 8. Before questions
 

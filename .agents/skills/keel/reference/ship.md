@@ -10,15 +10,15 @@ Make the target **safe to deploy**: close P0/P1 from critique, confirm failure m
 
 ## Flow
 
-1. Load PRODUCT.md / ARCHITECTURE.md / eng-floor.md.
+1. Load PRODUCT.md / ARCHITECTURE.md / eng-floor.md. Respect [analysis-scope.md](analysis-scope.md).
 2. Read latest critique snapshot in `.keel/critique/` for this target slug.
    - If none: offer `critique` first, or proceed with a scoped ship checklist the user names.
 3. Triage **P0 → P1 → P2**. Skip P3 unless explicitly requested.
 4. Fix in one batch at the narrowest correct level.
 5. Run `scripts/keel detect` / `detect.js` on touched paths; clear new primary findings.
 6. Re-score lightly only the categories you changed; do not invent a full second critique unless asked.
-7. Persist a short note (or frontmatter `closed_by: ship`) on the snapshot when possible.
-8. Recommend `/keel critique <target>` to refresh the official score + trend before merge/deploy.
+7. **Close the snapshot** (required when filesystem allows) — see [Closing the critique snapshot](#closing-the-critique-snapshot).
+8. Recommend `/keel critique <target>` to refresh the official score + trend **only if** fixes landed and a fresh score is the pending follow-up (issue-mapped).
 
 ## Ship checklist (batch)
 
@@ -29,6 +29,28 @@ Make the target **safe to deploy**: close P0/P1 from critique, confirm failure m
 - [ ] No new detector primary findings on touched files
 - [ ] Observability still enough for on-call on this path
 - [ ] Wire contracts unchanged unless user approved
+
+## Closing the critique snapshot
+
+When P0/P1 for this slug are fixed or explicitly deferred with owner, update the **latest** `.keel/critique/*__<slug>.md`:
+
+1. Frontmatter — set at least:
+   ```yaml
+   status: closed
+   closed_by: ship
+   closed_at: <ISO date>
+   deferred: []   # or [{ id, owner, reason }]
+   ```
+2. Append a short section (user’s language):
+   ```markdown
+   ## Ship closure
+   - Closed: [P0] … — how
+   - Deferred: [P2] … — owner …
+   - Detector on touched paths: clean | N primary remaining
+   ```
+3. Do **not** delete history; closure is additive. `status` / `closed_by` make `/keel status` report **Ship: closed**.
+
+If nothing could be written, say so in chat and still report checklist results.
 
 ## Rules
 

@@ -6,11 +6,13 @@ CMD="${1:-help}"
 shift || true
 case "$CMD" in
   detect) exec node "$ROOT/detect.js" "$@" ;;
+  status) exec node "$ROOT/status.js" "$@" ;;
   hook|hook-after-edit) exec node "$ROOT/hook.js" "$@" ;;
   install) exec node "$ROOT/../../cli/bin/keel.js" install "$@" ;;
   version|help|-h|--help)
     echo "keel scripts launcher"
-    echo "  detect [--json] [path]"
+    echo "  detect [--json] [--explain] [--stack=…] [path]"
+    echo "  status [--json] [--detect] [--slug=…] [path]"
     echo "  hook   (Cursor afterFileEdit)"
     exit 0
     ;;

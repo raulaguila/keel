@@ -50,6 +50,7 @@ Core principles:
 | `secure [target]` | Evaluate | Threat sketch + authz matrix | [reference/secure.md](reference/secure.md) |
 | `observe [target]` | Evaluate | Telemetry gaps, cardinality, on-call signals | [reference/observe.md](reference/observe.md) |
 | `doctor` | Evaluate | Drift between Keel artifacts and repo | [reference/doctor.md](reference/doctor.md) |
+| `status [target]` | Evaluate | Critique/ship/detector pulse (read-only) | [reference/status.md](reference/status.md) |
 | `ship [target]` | Refine | Close critique backlog; production release gate | [reference/ship.md](reference/ship.md) |
 | `organize [target]` | Refine | Package boundaries, dependency direction | [reference/organize.md](reference/organize.md) |
 | `distill [target]` | Refine | Strip accidental complexity | [reference/distill.md](reference/distill.md) |
@@ -66,6 +67,8 @@ Routing:
 - **Explicit/implied command:** load its reference. Alias: `polish` → `ship`.
 - **Otherwise:** general backend work under Setup + eng-floor.
 
-**Detect:** `node <skill-base-dir>/scripts/detect.js [--json] [path]` — exit 0 clean, 2 findings, 1 error.
+**Detect:** `node <skill-base-dir>/scripts/detect.js [--json] [--explain] [--stack=node] [path]` — exit 0 clean, 2 findings, 1 error. See [analysis-scope.md](reference/analysis-scope.md).
+
+**Status:** `node <skill-base-dir>/scripts/status.js [--json] [--detect] [--slug=name] [path]` — pulse from `.keel/critique/`.
 
 **Close-out:** [reference/next-commands.md](reference/next-commands.md) — suggest `/keel …` only for pending issues from this run; if none, suggest nothing.

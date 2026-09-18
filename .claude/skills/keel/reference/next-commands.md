@@ -25,6 +25,7 @@ Next commands exist to **act on issues already reported in this run** — not to
 | `critique` | Priority Issues P0–P3 still open (after user scope, if they answered) |
 | `audit` / `cost` / `secure` / `observe` | Findings not marked false-positive / deferred |
 | `doctor` | Failed/warn **artifact drift** checks only (not app code smells). Map to `init` / `document` / `hooks` / install — never to `critique` of PRODUCT.md |
+| `status` | Open P0/P1 from latest snapshot, or detector primaries if `--detect` was used |
 | `detect` (via scripts) | Primary findings (p0/p1) |
 | `ship` / `harden` / `optimize` / … | Remaining gaps you did **not** fix this turn, or new detector primaries still open |
 | `init` / `document` / `shape` | Only concrete follow-ups implied by gaps you named (e.g. “no ARCHITECTURE.md” → `document`). If setup completed cleanly with no gaps, no next commands. |

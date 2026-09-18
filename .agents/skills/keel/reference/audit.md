@@ -4,7 +4,7 @@ Technical quality pass: correctness, security posture, reliability, observabilit
 
 ## Scope
 
-Resolve target paths. Read PRODUCT.md / ARCHITECTURE.md for constraints. Load [eng-floor.md](eng-floor.md) when you will edit.
+Resolve target paths using [analysis-scope.md](analysis-scope.md) — skip Keel-owned / harness trees unless the user named them. Read PRODUCT.md / ARCHITECTURE.md for constraints. Load [eng-floor.md](eng-floor.md) when you will edit. Optional: `detect.js --json [--explain] <app-target>` for deterministic signals.
 
 ## Checklist (batch findings, then fix if asked)
 
