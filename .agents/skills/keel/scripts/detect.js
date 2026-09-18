@@ -17,7 +17,23 @@ const CODE_EXT = new Set([
 const IGNORE_DIR = new Set([
   "node_modules", ".git", "dist", "build", "coverage", ".next",
   "vendor", "target", "__pycache__", ".venv", "venv", ".keel",
+  // harness / skill install roots — not application source
+  ".cursor", ".claude", ".agents", ".codex", ".gemini", ".github",
 ]);
+
+const DEFAULT_IGNORE_GLOBS = [
+  "**/node_modules/**",
+  "**/vendor/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/.keel/**",
+  "**/.cursor/skills/**",
+  "**/.claude/skills/**",
+  "**/.agents/skills/**",
+  "**/tests/fixtures/**",
+  "**/skill/scripts/**",
+  "**/skill/reference/**",
+];
 
 /** @type {{ id: string, severity: string, message: string, re: RegExp, ext?: string[] }[]} */
 const RULES = [
@@ -43,16 +59,19 @@ const RULES = [
 
 function loadConfig(root) {
   const p = path.join(root, ".keel", "config.json");
-  if (!fs.existsSync(p)) return { ignoreRules: [], ignoreFiles: [] };
-  try {
-    const j = JSON.parse(fs.readFileSync(p, "utf8"));
-    return {
-      ignoreRules: j?.detector?.ignoreRules ?? [],
-      ignoreFiles: j?.detector?.ignoreFiles ?? [],
-    };
-  } catch {
-    return { ignoreRules: [], ignoreFiles: [] };
+  let ignoreRules = [];
+  let ignoreFiles = [...DEFAULT_IGNORE_GLOBS];
+  if (fs.existsSync(p)) {
+    try {
+      const j = JSON.parse(fs.readFileSync(p, "utf8"));
+      ignoreRules = j?.detector?.ignoreRules ?? [];
+      const extra = j?.detector?.ignoreFiles ?? [];
+      ignoreFiles = [...new Set([...ignoreFiles, ...extra])];
+    } catch {
+      /* keep defaults */
+    }
   }
+  return { ignoreRules, ignoreFiles };
 }
 
 function walk(dir, out = []) {

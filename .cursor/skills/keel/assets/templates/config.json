@@ -2,6 +2,18 @@
   "hook": { "enabled": true },
   "detector": {
     "ignoreRules": [],
-    "ignoreFiles": ["**/node_modules/**", "**/vendor/**", "**/dist/**", "**/tests/fixtures/**"]
+    "ignoreFiles": [
+      "**/node_modules/**",
+      "**/vendor/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/.keel/**",
+      "**/.cursor/skills/**",
+      "**/.claude/skills/**",
+      "**/.agents/skills/**",
+      "**/tests/fixtures/**",
+      "**/skill/reference/**",
+      "**/skill/scripts/**"
+    ]
   }
 }
