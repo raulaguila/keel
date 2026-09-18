@@ -1,6 +1,6 @@
 ---
 name: keel
-description: "Use when the user wants to design, review, or improve backend systems: APIs, services, workers, data models, architecture, performance, cost, reliability, organization, security posture, observability, and production readiness. Covers shape-before-build, architecture critique, technical audit, cost analysis, package boundaries, hardening (timeouts, retries, idempotency, authz), distill/simplify, optimize hot paths, and clarify contracts. Not for frontend/UI-only design work."
+description: "Use when the user wants to design, review, or improve backend systems: APIs, services, workers, data models, architecture, performance, cost, reliability, organization, security posture, observability, and production readiness. Covers shape-before-build, scored architecture critique with engineering personas and category grades, technical audit, cost analysis, package boundaries, hardening (timeouts, retries, idempotency, authz), distill/simplify, optimize hot paths, and clarify contracts. Not for frontend/UI-only design work."
 ---
 
 This skill gives you permission and procedure to practice out-of-distribution **backend craft**: production-grade systems with clear boundaries, honest scale assumptions, bounded failure modes, and cost awareness — not tutorial-shaped microservices or hopeful architecture diagrams.
@@ -43,7 +43,7 @@ Persist mode only in the surface brief (`.keel/surfaces/…`), not in PRODUCT.md
 | `init` | Build | Capture durable product/system truth in PRODUCT.md | [reference/init.md](reference/init.md) |
 | `document` | Build | Generate ARCHITECTURE.md from existing code | [reference/document.md](reference/document.md) |
 | `shape [feature]` | Build | Plan APIs, data, and boundaries before coding | [reference/shape.md](reference/shape.md) |
-| `critique [target]` | Evaluate | Architecture / API design review | [reference/critique.md](reference/critique.md) |
+| `critique [target]` | Evaluate | Scored review: 8 category grades, personas, P0–P3 backlog | [reference/critique.md](reference/critique.md) · [reference/personas.md](reference/personas.md) |
 | `audit [target]` | Evaluate | Correctness, security, reliability, observability | [reference/audit.md](reference/audit.md) |
 | `cost [target]` | Evaluate | Cost drivers: query, compute, storage, egress | [reference/cost.md](reference/cost.md) |
 | `organize [target]` | Refine | Package boundaries, layering, dependency direction | [reference/organize.md](reference/organize.md) |

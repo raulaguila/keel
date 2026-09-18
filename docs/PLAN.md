@@ -77,7 +77,7 @@ Keel gives builders:
 | `init` | Build | Interview + write `PRODUCT.md` |
 | `document` | Build | Extract `ARCHITECTURE.md` from code |
 | `shape` | Build | Plan API/data/boundaries before code |
-| `critique` | Evaluate | Architecture/UX-of-API review (A ∥ B) |
+| `critique` | Evaluate | Scored review: 8 categories /32, personas, P0–P3 backlog (A ∥ B) |
 | `audit` | Evaluate | Correctness, security, observability, reliability |
 | `cost` | Evaluate | Query/compute/storage/egress cost drivers |
 | `organize` | Refine | Package boundaries, layering, dependency direction |

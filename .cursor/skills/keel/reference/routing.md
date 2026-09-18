@@ -14,7 +14,8 @@ Signals (filesystem only in MVP):
 |--------|-----------|
 | No `PRODUCT.md` | `init` |
 | `PRODUCT.md` yes, no `ARCHITECTURE.md`, but substantial backend code | `document` |
-| Never critiqued / large recent backend churn | `critique <target>` |
+| Never critiqued / large recent backend churn | `critique <target>` (scores + personas) |
+| User wants grades / “how good is this repo” | `critique` |
 | Hot path or slow endpoint complaint | `optimize` or `cost` |
 | Tangled packages / unclear layers | `organize` or `distill` |
 | Shipping soon / reliability gaps | `harden` then `audit` |

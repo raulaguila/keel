@@ -19,12 +19,16 @@ In Cursor Agent chat:
 ```
 /keel init
 /keel document
-/keel critique payments-api
+/keel critique              # 8 category scores + personas + backlog
 /keel cost checkout
 /keel harden worker/orders
 ```
 
 Bare `/keel` shows a context-aware menu (never auto-runs).
+
+### Critique (Impeccable-style scoring)
+
+`/keel critique` grades the target on **8 categories** (0–4 each, usually **/32**), walks **2–3 engineering personas** (SRE, security, staff, FinOps, API consumer, chaos), and lists **P0–P3** fixes with suggested `/keel` follow-ups. Details: `skill/reference/critique.md` + `personas.md`.
 
 ## What you get
 
@@ -33,7 +37,7 @@ Bare `/keel` shows a context-aware menu (never auto-runs).
 | Router skill | `/keel <command>` |
 | Context | `PRODUCT.md` + `ARCHITECTURE.md` templates |
 | Floor | `reference/eng-floor.md` (Verify + Refuse) |
-| Commands | init, document, shape, critique, audit, cost, organize, distill, harden, optimize, clarify |
+| Commands | init, document, shape, critique (scored + personas), audit, cost, organize, distill, harden, optimize, clarify |
 | Detector / hooks | Planned (Phase 3) |
 
 ## Inspired by
