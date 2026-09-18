@@ -3,4 +3,5 @@ node_modules/
 *.log
 .keel/critique/
 .keel/config.local.json
+.keel/session-touched.json
 dist/

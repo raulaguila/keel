@@ -7,13 +7,20 @@ shift || true
 case "$CMD" in
   detect) exec node "$ROOT/detect.js" "$@" ;;
   status) exec node "$ROOT/status.js" "$@" ;;
+  doctor) exec node "$ROOT/doctor.js" "$@" ;;
+  live|live-api) exec node "$ROOT/live-api.js" "$@" ;;
+  pin) exec node "$ROOT/pin.js" "$@" ;;
   hook|hook-after-edit) exec node "$ROOT/hook.js" "$@" ;;
+  hook-stop) exec node "$ROOT/hook.js" --stop "$@" ;;
   install) exec node "$ROOT/../../cli/bin/keel.js" install "$@" ;;
   version|help|-h|--help)
     echo "keel scripts launcher"
     echo "  detect [--json] [--explain] [--stack=…] [path]"
     echo "  status [--json] [--detect] [--slug=…] [path]"
-    echo "  hook   (Cursor afterFileEdit)"
+    echo "  doctor [--json] [--fix]"
+    echo "  live   --base=URL [--path=/health]"
+    echo "  pin    add|remove|list <command>"
+    echo "  hook | hook-stop"
     exit 0
     ;;
   *)

@@ -12,6 +12,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CODE_EXT = new Set([
   ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
   ".py", ".go", ".rb", ".java", ".kt", ".kts", ".rs",
+  ".sql",
+]);
+
+const OPS_NAMES = new Set([
+  "makefile", "dockerfile", "docker-compose.yml", "docker-compose.yaml",
+  "compose.yml", "compose.yaml",
 ]);
 
 const IGNORE_DIR = new Set([
@@ -51,6 +57,9 @@ const STACK_PACKS = {
   java: ["java"],
   kotlin: ["java"],
   spring: ["java"],
+  ops: ["ops"],
+  docker: ["ops"],
+  make: ["ops"],
 };
 
 const EXPLAIN = {
@@ -72,6 +81,38 @@ const EXPLAIN = {
   "sql-string-concat": "Use parameterized queries / bound arguments; never interpolate SQL.",
   "god-file-hint": "Split by boundary/ownership; large files hide cycles and untested paths.",
   "process-env-secret-log": "Never log process.env values that may hold secrets; log keys only if needed.",
+  "eval-usage": "Avoid eval/Function on untrusted input; prefer parsers.",
+  "child-process-shell": "Prefer execFile/spawn without shell:true; sanitize if shell required.",
+  "cors-origin-star": "Reflecting * with credentials is unsafe; whitelist origins.",
+  "jwt-none-alg": "Reject alg=none / disable none algorithm explicitly.",
+  "crypto-md5-hash": "Prefer SHA-256+ for integrity; never MD5 for security.",
+  "express-raw-unlimited": "Set body size limits; unbounded parsers enable DoS.",
+  "redis-keys-star": "KEYS * blocks Redis; use SCAN.",
+  "sleep-in-handler": "Sleep/delay on request path burns workers; use async scheduling.",
+  "throw-string": "Throw Error objects, not bare strings (lost stacks).",
+  "process-exit-lib": "Libraries should not process.exit; leave exit to the process boundary.",
+  "grpc-insecure": "Use TLS credentials in production gRPC clients/servers.",
+  "amqp-no-ack-prefetch": "Set prefetch and explicit ack strategy for consumers.",
+  "offset-pagination-deep": "Deep OFFSET is expensive; prefer cursor/keyset for large lists.",
+  "yaml-load-unsafe": "Use safe_load / JSON; unrestricted YAML load can execute.",
+  "pickle-loads": "Never unpickle untrusted data.",
+  "subprocess-shell-true": "subprocess with shell=True is injection-prone.",
+  "go-context-todo": "Prefer request-scoped context over context.TODO/Background on handlers.",
+  "go-fmt-error-ignore": "Do not ignore fmt.Errorf/errors with _; handle or wrap.",
+  "sql-drop-destructive": "Destructive DROP in migrations needs expand/contract + rollback note.",
+  "dockerfile-latest-tag": "Pin image digests or major.minor; :latest drifts prod.",
+  "dockerfile-user-root": "Run as non-root USER in final stage.",
+  "dockerfile-secret-env": "Do not bake secrets into ENV/ARG of published images.",
+  "makefile-rm-root": "Guard destructive rm targets; never rm -rf /.",
+  "compose-privileged": "privileged: true is a last resort; drop caps instead.",
+  "compose-bind-docker-sock": "Mounting docker.sock grants host control — avoid in app services.",
+  "dangerously-disable-csrf": "CSRF disabled without documented substitute is a P0 for cookie sessions.",
+  "set-interval-leak": "Uncleared setInterval on request path leaks handles.",
+  "new-buffer-deprecated": "Use Buffer.from/alloc; new Buffer is unsafe/deprecated.",
+  "math-random-token": "Use crypto random for tokens/secrets, not Math.random.",
+  "http-listen-all-interfaces": "Binding 0.0.0.0 is fine in containers; ensure authz/network policy.",
+  "django-debug-true": "DEBUG=True must not ship to production.",
+  "flask-secret-hardcoded": "Set Flask/Django SECRET_KEY from env, not source.",
 };
 
 /**
@@ -125,31 +166,82 @@ const RULES = [
   { id: "sql-string-concat", severity: "p0", pack: "core", message: "SQL built via string concat/interpolation", re: /(?:query|execute|raw)\s*\(\s*[`'"].*\+|f["'].*(?:SELECT|INSERT|UPDATE|DELETE)|`[^`]*\$\{[^}]+\}[^`]*(?:SELECT|INSERT|UPDATE|DELETE)/i },
   { id: "god-file-hint", severity: "p2", pack: "core", message: "Very large source file (>800 lines) — god module risk", re: /(?:)/ },
   { id: "process-env-secret-log", severity: "p1", pack: "node", message: "Logging process.env likely secret", re: /console\.(?:log|info|debug|error)\s*\([^)]*process\.env\./ },
+  { id: "eval-usage", severity: "p0", pack: "core", message: "eval / new Function", re: /\beval\s*\(|new\s+Function\s*\(/ },
+  { id: "child-process-shell", severity: "p1", pack: "node", message: "child_process with shell:true", re: /(?:exec|spawn|execSync|spawnSync)\s*\([^)]*shell\s*:\s*true/ },
+  { id: "cors-origin-star", severity: "p1", pack: "node", message: "CORS origin *", re: /origin\s*:\s*['"]\*['"]|Access-Control-Allow-Origin['":\s]+\*/ },
+  { id: "jwt-none-alg", severity: "p0", pack: "core", message: "JWT none algorithm risk", re: /algorithms?\s*:\s*\[[^\]]*['"]none['"]|alg['"\s:=]+none/i },
+  { id: "crypto-md5-hash", severity: "p1", pack: "core", message: "MD5/SHA1 createHash for security-ish use", re: /createHash\s*\(\s*['"]md5['"]\)|hashlib\.md5|MessageDigest\.getInstance\(\s*"MD5"/ },
+  { id: "express-raw-unlimited", severity: "p1", pack: "node", message: "express.json/raw without limit", re: /express\.(?:json|raw|urlencoded)\s*\(\s*\)/ },
+  { id: "redis-keys-star", severity: "p1", pack: "core", message: "Redis KEYS *", re: /\.keys\s*\(\s*['"]\*['"]\s*\)|KEYS\s+\*/i },
+  { id: "sleep-in-handler", severity: "p2", pack: "core", message: "Sleep/delay on likely request path", re: /await\s+.*\.(?:sleep|wait)\s*\(|time\.sleep\s*\(|Thread\.sleep\s*\(/ },
+  { id: "throw-string", severity: "p2", pack: "node", message: "throw of bare string", re: /throw\s+['"`]/ },
+  { id: "process-exit-lib", severity: "p2", pack: "node", message: "process.exit in module body path", re: /process\.exit\s*\(/ },
+  { id: "grpc-insecure", severity: "p1", pack: "core", message: "gRPC insecure credentials", re: /createInsecure\s*\(|insecure\.NewCredentials\s*\(|usePlaintext\s*\(\s*true/ },
+  { id: "amqp-no-ack-prefetch", severity: "p2", pack: "core", message: "AMQP consume without visible prefetch/noAck:false", re: /\.consume\s*\([^)]*noAck\s*:\s*true/ },
+  { id: "offset-pagination-deep", severity: "p2", pack: "core", message: "OFFSET-only pagination smell", re: /OFFSET\s+\$|OFFSET\s+\d+|skip\s*:\s*\w+/i },
+  { id: "yaml-load-unsafe", severity: "p0", pack: "python", message: "yaml.load without SafeLoader", re: /yaml\.load\s*\([^)]*\)(?!.*SafeLoader)/, ext: [".py"] },
+  { id: "pickle-loads", severity: "p0", pack: "python", message: "pickle.loads", re: /pickle\.loads?\s*\(/, ext: [".py"] },
+  { id: "subprocess-shell-true", severity: "p1", pack: "python", message: "subprocess shell=True", re: /subprocess\.(?:call|run|Popen)\s*\([^)]*shell\s*=\s*True/, ext: [".py"] },
+  { id: "go-context-todo", severity: "p2", pack: "go", message: "context.TODO/Background in handler-ish code", re: /context\.(?:TODO|Background)\s*\(\s*\)/, ext: [".go"] },
+  { id: "sql-drop-destructive", severity: "p1", pack: "ops", message: "Destructive DROP in SQL migration", re: /DROP\s+(TABLE|COLUMN|DATABASE|SCHEMA)\b/i, ext: [".sql"] },
+  { id: "dockerfile-latest-tag", severity: "p1", pack: "ops", message: "Docker image :latest", re: /^FROM\s+\S+:latest\b/im, fileMatch: /(^|\/)Dockerfile/i },
+  { id: "dockerfile-user-root", severity: "p2", pack: "ops", message: "USER root in Dockerfile", re: /^USER\s+root\b/im, fileMatch: /(^|\/)Dockerfile/i },
+  { id: "dockerfile-secret-env", severity: "p0", pack: "ops", message: "Secret-like ENV/ARG in Dockerfile", re: /^(?:ENV|ARG)\s+(?:.*_)?(?:SECRET|PASSWORD|TOKEN|API_KEY)\b/im, fileMatch: /(^|\/)Dockerfile/i },
+  { id: "makefile-rm-root", severity: "p0", pack: "ops", message: "Dangerous rm -rf /", re: /rm\s+-rf\s+\/(?!\w)/, fileMatch: /(^|\/)Makefile$/i },
+  { id: "compose-privileged", severity: "p1", pack: "ops", message: "compose privileged: true", re: /privileged\s*:\s*true/, fileMatch: /compose\.(yml|yaml)$/i },
+  { id: "compose-bind-docker-sock", severity: "p0", pack: "ops", message: "docker.sock bind mount", re: /\/var\/run\/docker\.sock/, fileMatch: /compose\.(yml|yaml)$/i },
+  { id: "dangerously-disable-csrf", severity: "p0", pack: "node", message: "CSRF protection disabled", re: /csrf\s*\(\s*false|disableCsrf|CSRF_COOKIE_SECURE\s*=\s*False/i },
+  { id: "set-interval-leak", severity: "p2", pack: "node", message: "setInterval without clearInterval nearby", re: /\bsetInterval\s*\(/, quietWindow: 500, quietNearby: /clearInterval/ },
+  { id: "new-buffer-deprecated", severity: "p1", pack: "node", message: "new Buffer(", re: /new\s+Buffer\s*\(/ },
+  { id: "math-random-token", severity: "p1", pack: "core", message: "Math.random for token/secret", re: /(?:token|secret|password|nonce).{0,40}Math\.random|Math\.random.{0,40}(?:token|secret|password|nonce)/i },
+  { id: "django-debug-true", severity: "p0", pack: "python", message: "DEBUG = True", re: /\bDEBUG\s*=\s*True\b/, ext: [".py"] },
+  { id: "flask-secret-hardcoded", severity: "p0", pack: "python", message: "Hardcoded SECRET_KEY", re: /SECRET_KEY\s*=\s*['"][^'"]+['"]/, ext: [".py"] },
 ];
 
 function loadConfig(root) {
-  const p = path.join(root, ".keel", "config.json");
-  let ignoreRules = [];
-  let ignoreFiles = [...DEFAULT_IGNORE_GLOBS];
-  /** @type {Record<string, string>} */
-  let severityOverrides = {};
-  /** @type {string[]} */
-  let stacks = [];
-  let minSeverity = null;
-  if (fs.existsSync(p)) {
+  const merge = (base, extra) => {
+    if (!extra) return base;
+    return {
+      ignoreRules: [...new Set([...(base.ignoreRules || []), ...(extra.ignoreRules || [])])],
+      ignoreFiles: [...new Set([...(base.ignoreFiles || []), ...(extra.ignoreFiles || [])])],
+      severityOverrides: { ...(base.severityOverrides || {}), ...(extra.severityOverrides || {}) },
+      stacks: extra.stacks?.length ? extra.stacks : base.stacks,
+      minSeverity: extra.minSeverity ?? base.minSeverity,
+      hook: { ...(base.hook || {}), ...(extra.hook || {}) },
+    };
+  };
+
+  let cfg = {
+    ignoreRules: [],
+    ignoreFiles: [...DEFAULT_IGNORE_GLOBS],
+    severityOverrides: {},
+    stacks: [],
+    minSeverity: null,
+    hook: { enabled: true, quiet: false, auditLog: null, consent: null },
+  };
+
+  for (const name of ["config.json", "config.local.json"]) {
+    const p = path.join(root, ".keel", name);
+    if (!fs.existsSync(p)) continue;
     try {
       const j = JSON.parse(fs.readFileSync(p, "utf8"));
-      ignoreRules = j?.detector?.ignoreRules ?? [];
-      const extra = j?.detector?.ignoreFiles ?? [];
-      ignoreFiles = [...new Set([...ignoreFiles, ...extra])];
-      severityOverrides = j?.detector?.severityOverrides ?? j?.detector?.severity ?? {};
-      if (Array.isArray(j?.detector?.stacks)) stacks = j.detector.stacks;
-      if (typeof j?.detector?.minSeverity === "string") minSeverity = j.detector.minSeverity;
-    } catch {
-      /* keep defaults */
-    }
+      cfg = merge(cfg, {
+        ignoreRules: j?.detector?.ignoreRules,
+        ignoreFiles: j?.detector?.ignoreFiles,
+        severityOverrides: j?.detector?.severityOverrides ?? j?.detector?.severity,
+        stacks: j?.detector?.stacks,
+        minSeverity: j?.detector?.minSeverity,
+        hook: j?.hook,
+      });
+    } catch { /* keep */ }
   }
-  return { ignoreRules, ignoreFiles, severityOverrides, stacks, minSeverity };
+
+  // Env overrides
+  if (process.env.KEEL_HOOK_DISABLED === "1") cfg.hook.enabled = false;
+  if (process.env.KEEL_HOOK_QUIET === "1") cfg.hook.quiet = true;
+  if (process.env.KEEL_HOOK_LOG) cfg.hook.auditLog = process.env.KEEL_HOOK_LOG;
+
+  return cfg;
 }
 
 function resolveSeverity(ruleId, base, overrides) {
@@ -175,6 +267,15 @@ function activePacks(cliStacks, cfgStacks) {
   return set;
 }
 
+function isOpsFile(name) {
+  const lower = name.toLowerCase();
+  if (OPS_NAMES.has(lower)) return true;
+  if (/^dockerfile\./i.test(name)) return true;
+  if (/^docker-compose\./i.test(name)) return true;
+  if (/^compose\./i.test(name)) return true;
+  return false;
+}
+
 function walk(dir, out = []) {
   let entries;
   try {
@@ -186,7 +287,7 @@ function walk(dir, out = []) {
     if (IGNORE_DIR.has(e.name)) continue;
     const full = path.join(dir, e.name);
     if (e.isDirectory()) walk(full, out);
-    else if (CODE_EXT.has(path.extname(e.name))) out.push(full);
+    else if (CODE_EXT.has(path.extname(e.name)) || isOpsFile(e.name)) out.push(full);
   }
   return out;
 }
@@ -248,8 +349,11 @@ function scanFile(file, cfg, root, { respectIgnore = true, packs = null } = {}) 
     if (packs && !packs.has(pack) && pack !== "core") continue;
     if (packs && pack === "core" && !packs.has("core")) continue;
     if (rule.ext && !rule.ext.includes(ext)) continue;
+    if (rule.fileMatch && !rule.fileMatch.test(rel) && !rule.fileMatch.test(path.basename(file))) continue;
 
-    if (rule.id === "n-plus-one-await-in-loop" || rule.quietNearby) {
+    // Multiline / ops whole-file rules (flags include m or s or quietNearby)
+    const wholeFile = rule.quietNearby || rule.id === "n-plus-one-await-in-loop" || (rule.re.flags || "").includes("m");
+    if (wholeFile) {
       let m;
       const re = new RegExp(rule.re.source, rule.re.flags.includes("g") ? rule.re.flags : rule.re.flags + "g");
       while ((m = re.exec(text)) !== null) {

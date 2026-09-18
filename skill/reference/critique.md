@@ -33,7 +33,7 @@ Category aliases: `boundaries`, `contracts`, `reliability`, `data`, `security`, 
 
 Without detector dumps:
 
-1. Infer surface **mode** (Serve / Process / Store / Integrate / Control).
+1. Infer surface **mode** (Serve / Process / Store / Integrate / Control). Load mode depth when Serve/Process/Store: [mode-serve.md](mode-serve.md) / [mode-process.md](mode-process.md) / [mode-store.md](mode-store.md).
 2. Auto-select **2–3 personas** from [personas.md](personas.md) using the selection table. If PRODUCT.md has real Users / Operating Context, add **1 project-specific persona** (do not invent audience).
 3. For each selected persona, walk the primary path of the target and list **specific red flags** (file/symbol when possible) — not generic advice.
 4. Score all **8 categories** 0–4 using the [Category Scoring Guide](#category-scoring-guide). Use `n/a` only when the category cannot apply to this surface; renormalize the total.

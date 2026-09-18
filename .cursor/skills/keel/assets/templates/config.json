@@ -1,5 +1,5 @@
 {
-  "hook": { "enabled": true },
+  "hook": { "enabled": true, "quiet": false, "auditLog": null },
   "detector": {
     "ignoreRules": [],
     "ignoreFiles": [

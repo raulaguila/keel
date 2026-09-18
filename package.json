@@ -1,7 +1,7 @@
 {
   "name": "keel-craft",
-  "version": "0.3.1",
-  "description": "Backend craft skill for AI coding agents — scored critique, personas, detector, hooks",
+  "version": "0.4.0",
+  "description": "Backend craft skill for AI coding agents — scored critique, personas, detector, hooks, doctor, live API",
   "type": "module",
   "bin": {
     "keel": "cli/bin/keel.js"
@@ -9,6 +9,7 @@
   "files": [
     "cli/",
     "skill/",
+    "scripts/",
     "README.md",
     "LICENSE"
   ],
@@ -28,6 +29,10 @@
   "scripts": {
     "detect": "node skill/scripts/detect.js",
     "status": "node skill/scripts/status.js",
+    "doctor": "node skill/scripts/doctor.js",
+    "live": "node skill/scripts/live-api.js",
+    "pin": "node skill/scripts/pin.js",
+    "sync": "node scripts/sync-providers.js",
     "test:detector": "node tests/oracle/run-detector.mjs",
     "test:smoke": "node tests/smoke/run.mjs",
     "test": "npm run test:detector && npm run test:smoke",

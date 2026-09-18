@@ -1,37 +1,27 @@
-# Keel — status (v0.3)
-
-Implemented relative to the original plan:
+# Keel — status (v0.4)
 
 | Item | Status |
 |------|--------|
 | Skill router + eng-floor + PRODUCT/ARCHITECTURE | done |
-| Scored critique + 6 personas + baselines + focus + trend | done |
-| Assessment B evidence map + analysis-scope | done |
-| Doc sync after code changes | done |
-| Ops surfaces (Make/Docker/migrations) as evidence | done |
-| `shape` ADR + `.keel/surfaces/` | done |
-| Commands | full set including `ship`, `status`, scored `critique`, detect, hooks |
-| Close-out | next `/keel` only for pending issues (issue-mapped); omit when clean |
-| Detector (`detect.js`) | quieter HTTP timeouts, `--explain`, `--stack`, severityOverrides |
-| `ship` closes critique snapshots (`closed_by: ship`) | done |
-| `status` pulse CLI + playbook | done |
-| Cursor `afterFileEdit` hook | done |
-| `keel install` CLI (cursor/claude/agents) | done |
-| Oracle + smoke fixtures | done |
-| Case study `docs/cases/smelly-api.md` | done |
-| Stack rubrics | done |
-| Rust engine / live mode / 60+ rules | deferred |
-
-## Install
-
-```bash
-node cli/bin/keel.js install --providers=cursor
-```
+| Scored critique + personas + baselines + focus + trend | done |
+| Doc sync + ops surfaces | done |
+| `shape` ADR + surfaces | done |
+| `onboard` / `adapt` / `new-work` + mode depth | done |
+| `live` HTTP probe | done |
+| Stop hook deep pass + config.local | done |
+| `doctor --json/--fix` | done |
+| `pin` shims + command-metadata | done |
+| Detector ~50 rules + ops pack | done |
+| Subagents (documenter, finish-reviewer, ops-reader) | done |
+| Multi-provider install (cursor/claude/agents/codex/gemini/copilot) | done |
+| Provider sync script | done |
+| Rust engine | deferred (Node detector sufficient) |
 
 ## Verify
 
 ```bash
 npm test
-node skill/scripts/detect.js --json --explain tests/fixtures/smelly-api
-node skill/scripts/status.js --help
+npm run sync
+node cli/bin/keel.js doctor --json
+node skill/scripts/detect.js --list-rules | wc -l
 ```

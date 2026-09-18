@@ -4,30 +4,33 @@ Report (and optionally repair) **drift between Keel artifacts and application re
 
 Doctor is a **meta** check. It is **not** a code critique, architecture review, or detector pass over the app — and it must **never** treat Keel-generated docs as application source to “analyze for quality.”
 
-## In scope (artifacts under check)
+## CLI
 
-Only these Keel-owned paths (and the skill install used by this project):
+```bash
+node <skill-base-dir>/scripts/doctor.js [--json] [--fix]
+# or: keel doctor [--json] [--fix]
+```
+
+- `--json` — structured findings `{ id, severity, status, summary, fix, auto? }`
+- `--fix` — apply only **auto** fixes (schema stamps, missing `.keel/config.json`)
+
+Exit: `0` clean · `2` open findings · `1` error.
+
+## In scope (artifacts under check)
 
 | Artifact | Role |
 |----------|------|
 | `PRODUCT.md` | Exists? schema stamp? |
 | `ARCHITECTURE.md` | Exists when backend code exists? schema stamp? **path names** in Boundaries still present on disk? |
-| `.keel/config.json` | Exists? valid JSON? known keys? |
+| `.keel/config.json` | Exists? valid JSON? known ignore rule ids? |
 | `.keel/surfaces/*.md` | Optional; broken links only |
 | `.keel/critique/*.md` | Snapshots whose **target path** no longer exists |
 | Hook install | `.cursor/hooks.json` (or harness equivalent) points at an existing `scripts/hook.js` / `detect.js` |
+| Ops vs Delivery | migrations/ or Makefile/Dockerfile without Delivery coverage ([ops-surfaces.md](ops-surfaces.md), [doc-sync.md](doc-sync.md)) |
 
-## Out of scope (do not analyze as app code)
+## Out of scope
 
-Do **not** open these for quality/scoring/smell review during `doctor`:
-
-- Prose body of `PRODUCT.md` / `ARCHITECTURE.md` (except: extract **path-like** tokens from ARCHITECTURE Boundaries to verify they exist)
-- `.keel/critique/**` report bodies
-- Installed skill trees: `.cursor/skills/keel/**`, `.claude/skills/keel/**`, `.agents/skills/keel/**`, `skill/**` (when this repo *is* Keel)
-- `docs/` of the Keel package, templates under `assets/templates/`
-- Detector findings inside the skill’s own `scripts/` or `tests/fixtures/`
-
-Application source (`src/`, `app/`, `services/`, …) is used only as **evidence** for drift checks (e.g. “ARCHITECTURE names `billing/worker` but folder missing”). Do not run `/keel critique`, full `detect`, or eng-floor on the whole tree as part of doctor unless the user asked for that separately.
+Do **not** open PRODUCT/ARCHITECTURE prose for quality scoring; do not smell skill trees or fixtures. App source is **evidence** for path drift only.
 
 ## Checks
 
@@ -35,29 +38,19 @@ Application source (`src/`, `app/`, `services/`, …) is used only as **evidence
 |-------|----------|-----------|
 | Missing PRODUCT.md | high | no — suggest `init` |
 | Missing ARCHITECTURE.md while **application** backend code exists | high | no — suggest `document` |
-| Schema stamp missing/outdated (`keel:product-schema` / `keel:architecture-schema`) | med | yes — add stamp if content otherwise OK |
-| ARCHITECTURE Boundaries list packages/paths that no longer exist | med | no — list stale paths |
-| App has `migrations/` (or prisma/flyway/…) but ARCHITECTURE **Delivery** is missing/empty | med | no — suggest `document` or surgical Delivery edit ([doc-sync.md](doc-sync.md), [ops-surfaces.md](ops-surfaces.md)) |
-| `Makefile` / `Dockerfile` exists but Delivery never mentions how to build/run/migrate | low | no — suggest Delivery sync |
-| `.keel/config.json` missing or invalid | low | yes — write defaults |
-| Critique snapshots whose target path is gone | low | report only |
-| Hook installed but skill `scripts/hook.js` / `detect.js` missing | high | suggest `keel install` |
-| `detector.ignoreRules` referencing unknown rule ids | low | report |
-| Doctor accidentally scoped to skill/fixture trees only | — | abort and re-root on the app |
-
-“Backend code exists” means application languages under normal app dirs — **not** the presence of `PRODUCT.md` / skill markdown alone.
+| Schema stamp missing (`keel:product-schema` / `keel:architecture-schema`) | med | yes with `--fix` |
+| ARCHITECTURE Boundaries paths that no longer exist | med | no |
+| migrations present but Delivery empty | med | no — `document` / doc-sync |
+| Makefile/Dockerfile present but Delivery silent on ops | low | no |
+| `.keel/config.json` missing or invalid | low | yes missing defaults |
+| Unknown `detector.ignoreRules` ids | low | report |
+| Hook installed but script missing / no Keel entry | high | suggest `keel install` |
 
 ## Flow
 
-1. Resolve project root (app), not the skill package root unless the user opened Keel itself to dogfood.
-2. List only the artifact checks above. For path-drift: parse ARCHITECTURE Boundaries for path-like tokens; `fs`/list dirs to verify.
-3. Print a table: check · status · evidence · action. Evidence cites **app paths** or **missing artifacts**, not “PRODUCT.md tone is vague.”
-4. Apply only auto-fixes when the user said repair / `doctor --fix`. Never rewrite product principles or invent SLOs.
-5. Do **not** spawn critique/audit/detect-all as a side effect.
-
-## Output
-
-Table of checks. Pending doctor issues only (failed/warn rows).
+1. Prefer the CLI above; or run the same checklist manually.
+2. Print table / JSON. Apply `--fix` only when asked.
+3. Do **not** spawn critique/audit/detect-all as a side effect.
 
 ## Language
 

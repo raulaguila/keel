@@ -22,8 +22,12 @@ Recommend **2–3** next commands with one-line reasons, then list the Commands 
 | Capacity question | `load` |
 | Tangled packages | `organize` / `distill` / `extract` |
 | Shipping soon | `harden` then `audit` |
-| New feature, no design | `shape` |
+| New feature, no design | `shape` / follow [new-work.md](new-work.md) |
+| Activation / first-run / empty tenant | `onboard` |
+| Multi-env / multi-tenant / other consumers | `adapt` |
+| Running service to probe | `live` |
 | Detector noisy | `hooks status` |
+| Want `/audit` shortcut | `pin add audit` |
 
 Optional: run `node <skill>/scripts/detect.js --json` on git-dirty backend files and fold primary hits into recommendations.
 
