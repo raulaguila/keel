@@ -10,10 +10,16 @@
     "cli/",
     "skill/",
     "scripts/",
+    "install.sh",
     "README.md",
     "INSTALL.md",
     "LICENSE"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raulaguila/keel.git"
+  },
+
   "engines": {
     "node": ">=20"
   },

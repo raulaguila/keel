@@ -4,13 +4,13 @@ Skill de craft de backend para agentes — critique pontuado, detector, hooks, d
 
 ## Início rápido
 
+No diretório do **seu** projeto (sem clonar):
+
 ```bash
-git clone https://github.com/raulaguila/keel.git /tmp/keel-skill
-cd /caminho/do/seu/projeto
-node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor
-# vários: --providers=cursor,claude,codex,gemini,copilot
+curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor
+# ou: npx --yes github:raulaguila/keel install --providers=cursor
+# vários: --providers=cursor,claude,cline
 # todos:  --providers=all
-# lista:  --list-providers
 ```
 
 Guia completo por modelo/agente: **[INSTALL.md](INSTALL.md)**.

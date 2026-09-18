@@ -1,6 +1,30 @@
 # Instalar Keel em diversos agentes / modelos
 
-Clone ou baixe o repo e rode o instalador **no diretório do seu projeto** (não precisa ser dentro deste repo).
+Rode **no diretório do seu projeto**. Não é preciso clonar o repositório.
+
+## Instalação direta (recomendado)
+
+```bash
+cd /caminho/do/seu/projeto
+
+# curl — baixa master em temp, instala, apaga
+curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor
+
+# npx — usa o pacote do GitHub (Node 20+)
+npx --yes github:raulaguila/keel install --providers=cursor
+```
+
+Vários providers / Cline / sem hooks:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor,claude,cline
+npx --yes github:raulaguila/keel install --providers=all
+npx --yes github:raulaguila/keel install --providers=cursor --no-hooks
+```
+
+Pin de tag ou branch: `KEEL_REF=v0.4.2 curl -fsSL …/install.sh | bash -s -- --providers=cursor`
+
+## Clone local (opcional)
 
 ```bash
 git clone https://github.com/raulaguila/keel.git /tmp/keel-skill
@@ -75,10 +99,11 @@ Hooks do detector (edit + stop) são ligados automaticamente em **Cursor**, **Cl
 
 ## Atualizar
 
+Mesmo comando da instalação (sobrescreve a skill no projeto):
+
 ```bash
-git -C /tmp/keel-skill pull
-cd /caminho/do/seu/projeto
-node /tmp/keel-skill/cli/bin/keel.js update --providers=cursor,claude
+curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor,claude
+# ou: npx --yes github:raulaguila/keel update --providers=cursor,claude
 ```
 
-`update` é alias de `install` (sobrescreve a cópia da skill).
+`update` é alias de `install`.
