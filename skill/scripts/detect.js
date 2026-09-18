@@ -27,10 +27,9 @@ const DEFAULT_IGNORE_GLOBS = [
   "**/dist/**",
   "**/build/**",
   "**/.keel/**",
-  "**/.cursor/skills/**",
-  "**/.claude/skills/**",
-  "**/.agents/skills/**",
-  "**/tests/fixtures/**",
+  "**/.cursor/**",
+  "**/.claude/**",
+  "**/.agents/**",
   "**/skill/scripts/**",
   "**/skill/reference/**",
 ];
@@ -100,9 +99,14 @@ function matchGlob(file, glob) {
   return new RegExp("^" + esc + "$").test(file.replace(/\\/g, "/"));
 }
 
-function scanFile(file, cfg, root) {
+function scanFile(file, cfg, root, { respectIgnore = true } = {}) {
   const rel = path.relative(root, file).replace(/\\/g, "/");
-  if (cfg.ignoreFiles.some((g) => matchGlob(rel, g) || matchGlob(file, g))) return [];
+  if (
+    respectIgnore &&
+    cfg.ignoreFiles.some((g) => matchGlob(rel, g) || matchGlob(file.replace(/\\/g, "/"), g))
+  ) {
+    return [];
+  }
   const ext = path.extname(file);
   let text;
   try {
@@ -189,7 +193,8 @@ Exit: 0 clean, 2 findings, 1 error
   const root = process.cwd();
   const cfg = loadConfig(root);
   const targets = args.paths.length ? args.paths : ["."];
-  const files = [];
+  /** @type {{ file: string, respectIgnore: boolean }[]} */
+  const entries = [];
   for (const t of targets) {
     const abs = path.resolve(root, t);
     if (!fs.existsSync(abs)) {
@@ -197,12 +202,22 @@ Exit: 0 clean, 2 findings, 1 error
       process.exit(1);
     }
     const st = fs.statSync(abs);
-    if (st.isDirectory()) walk(abs, files);
-    else files.push(abs);
+    // Explicit paths (not ".") bypass ignore globs so oracles / targeted scans work.
+    const respectIgnore = path.resolve(root, t) === path.resolve(root, ".");
+    if (st.isDirectory()) {
+      const collected = [];
+      walk(abs, collected);
+      for (const f of collected) entries.push({ file: f, respectIgnore });
+    } else {
+      entries.push({ file: abs, respectIgnore: false });
+    }
   }
 
-  const findings = files.flatMap((f) => scanFile(f, cfg, root));
-  // de-dupe identical rule+file+line
+  const findings = entries.flatMap(({ file, respectIgnore }) =>
+    scanFile(file, cfg, root, { respectIgnore }),
+  );
+  const fileCount = entries.length;
+
   const seen = new Set();
   const unique = findings.filter((f) => {
     const k = `${f.ruleId}|${f.file}|${f.line}`;
@@ -217,19 +232,22 @@ Exit: 0 clean, 2 findings, 1 error
     const payload = {
       ok: true,
       root,
-      fileCount: files.length,
+      fileCount,
       findingCount: unique.length,
       primaryCount: primary.length,
       findings: unique,
     };
     if (args.hook) {
-      // Cursor afterFileEdit-friendly summary on stdout
       if (primary.length) {
-        const top = primary.slice(0, 20).map((f) => `${f.severity.toUpperCase()} ${f.file}:${f.line} [${f.ruleId}] ${f.message}`);
-        console.log(JSON.stringify({
-          continue: true,
-          user_message: `Keel detector: ${primary.length} primary finding(s).\n` + top.join("\n"),
-        }));
+        const top = primary
+          .slice(0, 20)
+          .map((f) => `${f.severity.toUpperCase()} ${f.file}:${f.line} [${f.ruleId}] ${f.message}`);
+        console.log(
+          JSON.stringify({
+            continue: true,
+            user_message: `Keel detector: ${primary.length} primary finding(s).\n` + top.join("\n"),
+          }),
+        );
       } else {
         console.log(JSON.stringify({ continue: true }));
       }
@@ -241,7 +259,9 @@ Exit: 0 clean, 2 findings, 1 error
       console.error(`${f.severity.toUpperCase()} ${f.file}:${f.line} [${f.ruleId}] ${f.message}`);
       if (f.snippet) console.error(`  ${f.snippet}`);
     }
-    console.error(`keel detect: ${unique.length} finding(s) in ${files.length} file(s) (${primary.length} primary)`);
+    console.error(
+      `keel detect: ${unique.length} finding(s) in ${fileCount} file(s) (${primary.length} primary)`,
+    );
   }
 
   process.exit(primary.length ? 2 : 0);
