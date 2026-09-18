@@ -1,54 +1,62 @@
-# Next commands (required close-out)
+# Next commands (issue-driven close-out)
 
-Every Keel command ends with **suggested next commands**. Never finish with only a report or a diff and silence. Mirror Impeccable: the user always sees a clear path forward.
+Next commands exist to **act on issues already reported in this run** — not to invent busywork.
 
 ## Hard rules
 
-1. After the main deliverable, emit a **Next commands** section (exact heading).
-2. List **2–3** items, priority order. Each line:
+1. Build the candidate list only from **pending issues** found in *this* command’s deliverable (Priority Issues, audit findings, detector primaries, doctor failures, ship checklist gaps, etc.).
+2. Emit **Next commands** only when that list is non-empty.
+3. If there are **no pending issues**, do **not** suggest next commands. Optionally one quiet line: `No pending issues — no next commands.` Do not recommend `critique` / `doctor` / `ship` just to fill space.
+4. When emitting, list **2–3** items max (or fewer if fewer issues). Priority order = severity then user preference.
+5. Each line must cite the issue it closes:
    ```
-   1. `/keel <command> [scope]` — why (one specific sentence tied to what just happened)
+   1. `/keel <command> [scope]` — closes [P1] <issue title or path>
    ```
-3. Only recommend commands from the SKILL.md Commands table (plus `hooks` / `doctor`).
-4. **Never auto-run** them unless the user explicitly asks to continue / run all / run #1.
-5. End with one short line:
+6. Only recommend commands from the SKILL.md Commands table (plus `hooks`).
+7. **Never auto-run** unless the user explicitly asks to continue / run all / run #1.
+8. After the list (only when non-empty):
    > You can ask me to run these one at a time, all at once, or in another order.
-6. If nothing useful remains (rare), still suggest `/keel critique <target>` or `/keel doctor` with a reason — do not omit the section.
+
+## What counts as a pending issue
+
+| Command | Pending issue sources |
+|---------|----------------------|
+| `critique` | Priority Issues P0–P3 still open (after user scope, if they answered) |
+| `audit` / `cost` / `secure` / `observe` | Findings not marked false-positive / deferred |
+| `doctor` | Checks with status fail/warn that need a command |
+| `detect` (via scripts) | Primary findings (p0/p1) |
+| `ship` / `harden` / `optimize` / … | Remaining gaps you did **not** fix this turn, or new detector primaries still open |
+| `init` / `document` / `shape` | Only concrete follow-ups implied by gaps you named (e.g. “no ARCHITECTURE.md” → `document`). If setup completed cleanly with no gaps, no next commands. |
+
+## Mapping issues → commands
+
+Pick the command that best **closes that issue**, for example:
+
+| Issue kind | Command |
+|------------|---------|
+| Timeouts, retries, idempotency, empty catch | `harden` |
+| Authz, secrets, IDOR, webhook trust | `secure` |
+| N+1, unbounded query, hot path | `optimize` or `cost` |
+| Missing metrics/logs/traces | `observe` |
+| Package cycles, god module | `organize` or `distill` |
+| Duplicate helpers ≥2 call sites | `extract` |
+| Schema/API evolve risk | `migrate` |
+| Capacity / backpressure | `load` |
+| Unclear errors/contracts/names | `clarify` |
+| Release-blocking leftovers after fixes | `ship` |
+| Need refreshed score after fixes | `critique` (only if issues were fixed and user should re-score — still an explicit follow-up to closed work, not filler) |
+
+Do **not** add `/keel ship` or `/keel critique` unless they close a named pending item (e.g. “P0s remain → ship” or “fixes landed → critique to refresh trend”).
 
 ## Critique-specific flow
 
-For `/keel critique` only:
+1. Full scored report first.
+2. **Ask the user** (same message, questions last) when ≥3 Priority Issues — priority, scope, constraints. If <3: `Questions skipped: <n> priority issues`.
+3. **After answers** (or immediately if questions skipped): filter Priority Issues to the chosen scope. If none remain → no Next commands. If some remain → Next commands, one-to-one with those issues (bundle only when one command truly closes several).
 
-1. Deliver the full scored report first.
-2. **Ask the user** 2–4 targeted questions **last in the same message** (priority area, scope, constraints). Offer concrete options tied to findings. If fewer than 3 Priority Issues: `Questions skipped: <n> priority issues`.
-3. **After the user answers**, emit **Next commands** / Action Summary mapped to their choices. Prefer ending the chain with `/keel ship` when any fix commands were recommended, then re-`critique` for trend.
+## Anti-patterns
 
-## Default maps (adapt to evidence)
-
-| After you just ran… | Typical next commands |
-|---------------------|------------------------|
-| `init` | `document` (if code exists) · `shape` (greenfield) · `critique` |
-| `document` | `critique` · `doctor` · `organize` (if boundaries vague) |
-| `shape` | implement per plan · `harden` on new edges · `critique` when built |
-| `critique` | (after answers) commands matching P0/P1 · always consider `ship` last · re-`critique` |
-| `audit` | `secure` / `harden` / `observe` by weakest dimension · `ship` |
-| `cost` | `optimize` · `observe` · `ship` |
-| `secure` | `harden` · `audit` · `ship` |
-| `observe` | `harden` · `critique` · `ship` |
-| `doctor` | `init` / `document` / `hooks on` as named · `critique` |
-| `ship` | `critique` (refresh score) · `detect` via scripts · `doctor` |
-| `organize` / `distill` / `extract` | `critique` · `ship` · `document` (update ARCHITECTURE) |
-| `harden` | `observe` · `secure` · `ship` |
-| `migrate` | `ship` · `load` (if risky online) · `critique` |
-| `optimize` | `cost` · `load` · `ship` |
-| `clarify` | `document` · `critique` · `ship` |
-| `load` | `optimize` · `harden` · `ship` |
-| `hooks` | `doctor` · `critique` · run `detect.js` on dirty files |
-
-## Detector signal
-
-If `detect.js` reported primary findings this turn, at least one Next command should address them (`harden`, `secure`, `optimize`, or `ship`).
-
-## Tone
-
-Backend voice: *ship*, *release gate*, *on-call*, *blast radius* — not *polish* / *pixel*.
+- Suggesting commands when the run found nothing actionable
+- Generic “you might also like `doctor`” with no finding
+- Recommendations that don’t reference an issue title/path/severity
+- Auto-running the list

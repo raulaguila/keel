@@ -30,4 +30,5 @@ End with recommended commands (`init`, `document`, `critique`, `hooks`).
 
 ## Close
 
-End with **Next commands** per [next-commands.md](next-commands.md). Never finish silent.
+If this run left **pending issues**, end with **Next commands** mapped to those issues ([next-commands.md](next-commands.md)).
+If none remain, do **not** suggest commands (optional: `No pending issues — no next commands.`).

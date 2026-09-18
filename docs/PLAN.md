@@ -7,7 +7,7 @@ Implemented relative to the original plan:
 | Skill router + eng-floor + PRODUCT/ARCHITECTURE | done |
 | Scored critique + 6 personas + baselines + focus + trend | done |
 | Commands | full set including `ship`, scored `critique`, detect, hooks |
-| Close-out | every command suggests 2–3 next `/keel` commands ([next-commands.md](skill/reference/next-commands.md)) |
+| Close-out | next `/keel` only for pending issues (issue-mapped); omit when clean ([next-commands.md](skill/reference/next-commands.md)) |
 | Detector MVP (`skill/scripts/detect.js`, ~18 rules) | done |
 | Cursor `afterFileEdit` hook | done |
 | `keel install` CLI (cursor/claude/agents) | done |

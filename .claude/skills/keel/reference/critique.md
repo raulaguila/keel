@@ -110,40 +110,38 @@ One short subsection per selected persona. Specific failures only (see personas.
 
 What Assessment B confirmed / contradicted. Missing detector = say so.
 
-### 8. Recommended next commands
+### 8. Before questions
 
-Emit **now only a teaser** (optional 1-liner that questions come next). Do **not** dump the full action plan before Ask the User.
+Do not dump an action plan before Ask the User.
 
 ### 9. Ask the user (LAST in this message)
 
 **Required** when there are ≥3 Priority Issues. Same message as the report; questions after the report body.
 
-Ask 2–4 targeted questions with concrete options tied to findings (not generic audience questions):
+Ask 2–4 targeted questions with concrete options tied to findings:
 
-1. **Priority** — which category/issue cluster first?
-2. **Scope** — top 3 only / all P0–P1 / everything?
+1. **Priority** — which issue cluster first?
+2. **Scope** — top 3 / all P0–P1 / everything?
 3. **Constraints** — anything off-limits?
-4. Optional: intentional tradeoff (e.g. “shared DB — keep or split?”)
 
-If <3 Priority Issues: print `Questions skipped: <n> priority issues` and go straight to Next commands using defaults from [next-commands.md](next-commands.md).
+If <3 Priority Issues: print `Questions skipped: <n> priority issues`.
 
-### 10. After the user answers — Next commands
+### 10. After the user answers (or after skip) — Next commands
 
-Load [next-commands.md](next-commands.md). Present:
+Load [next-commands.md](next-commands.md).
+
+- Filter Priority Issues to the chosen scope.
+- **If zero remain:** `No pending issues — no next commands.` Do not invent filler.
+- **If some remain:** each Next command closes a **named** issue:
 
 #### Next commands
 
-1. `/keel …` — …
-2. `/keel …` — …
-3. `/keel ship <target>` — close remaining release-gate items (if any fixes recommended)
-
-Then:
+1. `/keel harden checkout` — closes [P0] no timeout on payments client
+2. `/keel secure checkout` — closes [P1] IDOR on GET /invoices/:id
 
 > You can ask me to run these one at a time, all at once, or in another order.
->
-> Re-run `/keel critique` after fixes to see the score/trend improve.
 
-Map each Priority Issue in scope to a command. Prefer user priority order, then severity.
+Only add `/keel ship` or re-`critique` when they close a remaining named item.
 
 ---
 

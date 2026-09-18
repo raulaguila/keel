@@ -16,7 +16,7 @@ Core principles:
 2. If `PRODUCT.md` exists, read it. If `ARCHITECTURE.md` exists, read it. If `.keel/surfaces/` has a matching brief, read it. Do not invent missing sections.
 3. Load the request’s playbook from the Commands table. For undescribed new systems: **shape** then build. Narrow fixes may proceed; offer `init` if PRODUCT.md is missing.
 4. Immediately before editing implementation code, read [reference/eng-floor.md](reference/eng-floor.md). Skip for planning-only (`shape`, pure `critique`/`doctor` reporting).
-5. **Always close with next commands.** When the command’s deliverable is done (report and/or edits), read [reference/next-commands.md](reference/next-commands.md) and emit the **Next commands** section. Skipping it is a failed run.
+5. **Close with next commands only when issues remain.** Read [reference/next-commands.md](reference/next-commands.md). If this run produced pending issues, emit **Next commands** mapped 1:1 to those issues. If none, do not suggest commands (optional: `No pending issues — no next commands.`).
 
 **Missing context:** New service/boundary/replacement architecture without PRODUCT.md → `init` first (or ask once). Scoped bugfixes may proceed.
 
@@ -66,4 +66,4 @@ Routing:
 
 **Detect:** `node <skill-base-dir>/scripts/detect.js [--json] [path]` — exit 0 clean, 2 findings, 1 error.
 
-**Close-out:** every command → [reference/next-commands.md](reference/next-commands.md).
+**Close-out:** [reference/next-commands.md](reference/next-commands.md) — suggest `/keel …` only for pending issues from this run; if none, suggest nothing.

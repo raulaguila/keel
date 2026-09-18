@@ -29,6 +29,6 @@ Optional: run `node <skill>/scripts/detect.js --json` on git-dirty backend files
 
 If git dirty files point at one module, scope commands to that path.
 
-## After any recommendation menu
+## After a command finishes
 
-When the user picks a command and it finishes, that command must still close with [next-commands.md](next-commands.md).
+Close per [next-commands.md](next-commands.md): suggest next `/keel` only for **pending issues** from that run; if none, suggest nothing.
