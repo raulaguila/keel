@@ -6,7 +6,7 @@ Implemented relative to the original plan:
 |------|--------|
 | Skill router + eng-floor + PRODUCT/ARCHITECTURE | done |
 | Scored critique + 6 personas + baselines + focus + trend | done |
-| polish / doctor / observe / secure / migrate / load / extract / hooks | done |
+| ship (ex-polish) / doctor / observe / secure / migrate / load / extract / hooks | done |
 | Detector MVP (`skill/scripts/detect.js`, ~18 rules) | done |
 | Cursor `afterFileEdit` hook | done |
 | `keel install` CLI (cursor/claude/agents) | done |

@@ -1,6 +1,6 @@
 # Keel
 
-Backend craft skill for AI coding agents — Impeccable-shaped: scored critique, personas, detector, hooks, polish loop.
+Backend craft skill for AI coding agents — Impeccable-shaped: scored critique, personas, detector, hooks, ship loop.
 
 ## Quick start
 
@@ -21,7 +21,7 @@ node cli/bin/keel.js detect --json .
 
 Build: `init` `document` `shape` `extract`  
 Evaluate: `critique` `audit` `cost` `secure` `observe` `doctor`  
-Refine: `polish` `organize` `distill` `harden` `migrate`  
+Refine: `ship` `organize` `distill` `harden` `migrate`  
 Fix: `optimize` `clarify` `load`  
 System: `hooks`
 

@@ -98,7 +98,7 @@ First run → “First run for this target, no trend yet.” Differing `max_scor
 - **What** — concrete location
 - **Why it matters** — blast radius / user or cost impact
 - **Fix** — smallest correct change
-- **Suggested command** — one of: `harden`, `organize`, `distill`, `optimize`, `cost`, `clarify`, `audit`, `shape`, `document`
+- **Suggested command** — one of: `ship`, `harden`, `organize`, `distill`, `optimize`, `cost`, `clarify`, `audit`, `secure`, `observe`, `shape`, `document`
 
 ### 6. Persona red flags
 
@@ -112,7 +112,7 @@ What Assessment B confirmed / contradicted. Missing detector = say so.
 
 ### 8. Recommended next commands
 
-2–3 `/keel …` lines the user can run next, tied to the lowest scores.
+2–3 `/keel …` lines the user can run next, tied to the lowest scores. Prefer `/keel ship` when P0/P1 exist and the goal is release.
 
 ### 9. Ask the user (LAST)
 

@@ -1,4 +1,4 @@
-# Case study: smelly-api → scored critique → polish loop
+# Case study: smelly-api → scored critique → ship loop
 
 ## Before
 
@@ -20,7 +20,7 @@ Example critique (illustrative):
 
 Personas Mira/Kai/Lena all raise P0s on secrets + empty catch + unbounded lists.
 
-## After (target after `/keel polish` + harden)
+## After (target after `/keel ship` + harden)
 
 - Secrets in env
 - Timeouts + AbortSignal on fetch
@@ -35,6 +35,6 @@ Target band: **Acceptable→Good (16–24/32)** depending on remaining observabi
 ```
 /keel critique tests/fixtures/smelly-api
 node skill/scripts/detect.js --json tests/fixtures/smelly-api
-/keel polish
+/keel ship
 /keel critique   # trend should rise
 ```

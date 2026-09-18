@@ -14,7 +14,7 @@ Recommend **2–3** next commands with one-line reasons, then list the Commands 
 | PRODUCT yes, no ARCHITECTURE, backend code exists | `document` |
 | Stale/missing Keel artifacts | `doctor` |
 | Never critiqued / “give me a score” | `critique` |
-| Critique snapshot with open P0/P1 | `polish` |
+| Critique snapshot with open P0/P1 | `ship` (release gate; alias: `polish`) |
 | Hot path / slow / $$$ | `optimize` or `cost` |
 | Authz / secrets concern | `secure` |
 | Telemetry gaps | `observe` |

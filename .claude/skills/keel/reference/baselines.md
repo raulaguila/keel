@@ -4,7 +4,7 @@ Honest calibration for `/keel critique` totals (8 categories × 0–4 = **/32** 
 
 | Band | % | Typical meaning |
 |------|---|-----------------|
-| Excellent | ≥90% (≥29/32) | Ship-quality craft; minor polish |
+| Excellent | ≥90% (≥29/32) | Release-ready craft; only nits left |
 | Good | ≥70% (≥23/32) | Solid; fix weak categories before scale events |
 | Acceptable | ≥50% (≥16/32) | Runs; will hurt on-call/cost/security under stress |
 | Poor | ≥30% (≥10/32) | Major gaps; do not expand surface area yet |
