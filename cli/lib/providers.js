@@ -56,6 +56,13 @@ export const PROVIDER_CATALOG = {
     dir: (name) => `.continue/skills/${name}`,
     invoke: (name) => `/${name}`,
   },
+  cline: {
+    label: "Cline",
+    dir: (name) => `.cline/skills/${name}`,
+    // alternate project path Cline also discovers
+    extraDirs: (name) => [`.clinerules/skills/${name}`],
+    invoke: (name) => `/${name}`,
+  },
   kiro: {
     label: "Kiro",
     dir: (name) => `.kiro/skills/${name}`,

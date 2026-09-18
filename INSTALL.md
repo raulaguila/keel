@@ -20,6 +20,7 @@ node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor
 | OpenCode | `node …/keel.js install --providers=opencode` |
 | Windsurf | `node …/keel.js install --providers=windsurf` |
 | Continue | `node …/keel.js install --providers=continue` |
+| Cline | `node …/keel.js install --providers=cline` |
 | Grok Build | `node …/keel.js install --providers=grok` |
 | Kiro | `node …/keel.js install --providers=kiro` |
 | Pi | `node …/keel.js install --providers=pi` |
