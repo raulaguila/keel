@@ -1,20 +1,22 @@
-# Instalar Keel em diversos agentes / modelos
+# Install Keel on many agents / models
 
-Rode **no diretório do seu projeto**. Não é preciso clonar o repositório.
+Run from **your project root**. No clone required.
 
-## Instalação direta (recomendado)
+> Prefer the [README](README.md) quick start. This page is the full provider table.
+
+## Direct install (recommended)
 
 ```bash
-cd /caminho/do/seu/projeto
+cd /path/to/your/project
 
-# curl — baixa master em temp, instala, apaga
+# curl — fetch master to a temp dir, install, clean up
 curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor
 
-# npx — usa o pacote do GitHub (Node 20+)
+# npx — GitHub package (Node 20+)
 npx --yes github:raulaguila/keel install --providers=cursor
 ```
 
-Vários providers / Cline / sem hooks:
+Multiple providers / Cline / no hooks:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor,claude,cline
@@ -22,62 +24,55 @@ npx --yes github:raulaguila/keel install --providers=all
 npx --yes github:raulaguila/keel install --providers=cursor --no-hooks
 ```
 
-Pin de tag ou branch: `KEEL_REF=v0.4.2 curl -fsSL …/install.sh | bash -s -- --providers=cursor`
+Pin tag or branch: `KEEL_REF=v0.4.2 curl -fsSL …/install.sh | bash -s -- --providers=cursor`
 
-## Clone local (opcional)
+## Local clone (optional)
 
 ```bash
 git clone https://github.com/raulaguila/keel.git /tmp/keel-skill
-cd /caminho/do/seu/projeto
+cd /path/to/your/project
 node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor
 ```
 
-## Um comando por harness
+## One command per harness
 
-| Harness / agente | Comando |
-|------------------|---------|
-| Cursor | `node …/keel.js install --providers=cursor` |
-| Claude Code | `node …/keel.js install --providers=claude` |
-| Codex / Agents | `node …/keel.js install --providers=codex` ou `agents` |
-| Gemini CLI | `node …/keel.js install --providers=gemini` |
-| GitHub Copilot | `node …/keel.js install --providers=copilot` |
-| OpenCode | `node …/keel.js install --providers=opencode` |
-| Windsurf | `node …/keel.js install --providers=windsurf` |
-| Continue | `node …/keel.js install --providers=continue` |
-| Cline | `node …/keel.js install --providers=cline` |
-| Grok Build | `node …/keel.js install --providers=grok` |
-| Kiro | `node …/keel.js install --providers=kiro` |
-| Pi | `node …/keel.js install --providers=pi` |
-| Trae / Trae CN | `node …/keel.js install --providers=trae` ou `trae-cn` |
-| Hermes | `node …/keel.js install --providers=hermes` |
-| DeepSeek Harness | `node …/keel.js install --providers=dsh` |
-| Qoder | `node …/keel.js install --providers=qoder` |
-| Rovo Dev | `node …/keel.js install --providers=rovo-dev` |
-| Mistral Vibe | `node …/keel.js install --providers=vibe` |
-| Veto | `node …/keel.js install --providers=veto` |
-| Antigravity | `node …/keel.js install --providers=antigravity` |
-| Aider (path manual) | `node …/keel.js install --providers=aider` |
+| Harness / agent | Command |
+|-----------------|---------|
+| Cursor | `… install --providers=cursor` |
+| Claude Code | `… install --providers=claude` |
+| Codex / Agents | `… install --providers=codex` or `agents` |
+| Gemini CLI | `… install --providers=gemini` |
+| GitHub Copilot | `… install --providers=copilot` |
+| OpenCode | `… install --providers=opencode` |
+| Windsurf | `… install --providers=windsurf` |
+| Continue | `… install --providers=continue` |
+| Cline | `… install --providers=cline` |
+| Grok Build | `… install --providers=grok` |
+| Kiro | `… install --providers=kiro` |
+| Pi | `… install --providers=pi` |
+| Trae / Trae CN | `… install --providers=trae` or `trae-cn` |
+| Hermes | `… install --providers=hermes` |
+| DeepSeek Harness | `… install --providers=dsh` |
+| Qoder | `… install --providers=qoder` |
+| Rovo Dev | `… install --providers=rovo-dev` |
+| Mistral Vibe | `… install --providers=vibe` |
+| Veto | `… install --providers=veto` |
+| Antigravity | `… install --providers=antigravity` |
+| Aider (manual path) | `… install --providers=aider` |
 
-## Vários de uma vez
+## Several at once
 
 ```bash
-# Principais
-node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor,claude,codex,gemini,copilot
-
-# Todos os paths conhecidos
-node /tmp/keel-skill/cli/bin/keel.js install --providers=all
-
-# Listar ids
-node /tmp/keel-skill/cli/bin/keel.js install --list-providers
-
-# Sem hooks do detector
-node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor --no-hooks
+npx --yes github:raulaguila/keel install --providers=cursor,claude,codex,gemini,copilot
+npx --yes github:raulaguila/keel install --providers=all
+npx --yes github:raulaguila/keel install --list-providers
+npx --yes github:raulaguila/keel install --providers=cursor --no-hooks
 ```
 
-## Onde a skill é copiada
+## Where the skill is copied
 
-| Provider | Pasta no projeto | Como invocar |
-|----------|------------------|--------------|
+| Provider | Project folder | Invoke |
+|----------|----------------|--------|
 | `cursor` | `.cursor/skills/keel` | `/keel` |
 | `claude` | `.claude/skills/keel` | `/keel` |
 | `agents` / `codex` | `.agents/skills/keel` (+ `.codex/skills/keel`) | `/keel` |
@@ -87,23 +82,23 @@ node /tmp/keel-skill/cli/bin/keel.js install --providers=cursor --no-hooks
 | `cline` | `.cline/skills/keel` (+ `.clinerules/skills/keel`) | `/keel` |
 | `opencode` | `.opencode/skills/keel` | `/keel` |
 | `grok` | `.grok/skills/keel` | `/keel` |
-| … | ver `--list-providers` | `/keel` |
+| … | see `--list-providers` | `/keel` |
 
-Hooks do detector (edit + stop) são ligados automaticamente em **Cursor**, **Claude Code**, **Copilot**, **Codex** e **Grok** (use `--no-hooks` para pular).
+Detector hooks (edit + stop) wire automatically on **Cursor**, **Claude Code**, **Copilot**, **Codex**, and **Grok** (pass `--no-hooks` to skip).
 
-## Depois de instalar
+## After install
 
-1. Recarregue o harness / abra de novo o Agent chat.  
-2. Rode `/keel init` no projeto.  
-3. Opcional: `node …/keel.js detect --json src/`
+1. Reload the harness / reopen Agent chat.
+2. Run `/keel init` in the project.
+3. Optional: `npx --yes github:raulaguila/keel detect --json src/`
 
-## Atualizar
+## Update
 
-Mesmo comando da instalação (sobrescreve a skill no projeto):
+Same command as install (overwrites the skill copy):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/raulaguila/keel/master/install.sh | bash -s -- --providers=cursor,claude
-# ou: npx --yes github:raulaguila/keel update --providers=cursor,claude
+# or: npx --yes github:raulaguila/keel update --providers=cursor,claude
 ```
 
-`update` é alias de `install`.
+`update` is an alias of `install`.
