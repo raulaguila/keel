@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Keel launcher — thin router for skill scripts
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+CMD="${1:-help}"
+shift || true
+case "$CMD" in
+  detect) exec node "$ROOT/detect.js" "$@" ;;
+  hook|hook-after-edit) exec node "$ROOT/hook.js" "$@" ;;
+  install) exec node "$ROOT/../../cli/bin/keel.js" install "$@" ;;
+  version|help|-h|--help)
+    echo "keel scripts launcher"
+    echo "  detect [--json] [path]"
+    echo "  hook   (Cursor afterFileEdit)"
+    exit 0
+    ;;
+  *)
+    echo "unknown verb: $CMD" >&2
+    exit 1
+    ;;
+esac

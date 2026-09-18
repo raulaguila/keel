@@ -143,14 +143,20 @@ If PRODUCT.md has real Users / Operating Context, add **1 project-specific perso
 
 ---
 
-## Project-specific persona template
+## Project-specific personas (from PRODUCT.md)
 
-Only when PRODUCT.md has real audience/ops facts:
+When PRODUCT.md has real **Users**, **Operating Context**, or **Constraints**, derive **1–2** extra personas:
+
+1. Read those sections only — no invention.
+2. Prefer an archetype not covered by the six above (e.g. regulated-industry auditor, franchise operator, marketplace seller).
+3. Use this template:
 
 ```markdown
 ### [Role]: "[Name]"
 
-**Profile**: … (from PRODUCT.md)
-**Behaviors**: …
-**Red flags for this target**: …
+**Profile**: … (cite PRODUCT.md section)
+**Behaviors**: 3–4 behaviors implied by that text
+**Red flags for this target**: 3–4 concrete breaks on *this* codebase
 ```
+
+If PRODUCT.md is missing or those sections are `Unknown`, skip project-specific personas.

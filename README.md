@@ -1,49 +1,51 @@
 # Keel
 
-Backend craft skill for AI coding agents — the Impeccable-shaped counterpart for APIs, workers, data, architecture, performance, cost, and organization.
+Backend craft skill for AI coding agents — Impeccable-shaped: scored critique, personas, detector, hooks, polish loop.
 
-> **Status:** MVP skill (playbooks + templates). No detector binary yet. See [docs/PLAN.md](docs/PLAN.md).
-
-## Quick start (Cursor)
+## Quick start
 
 ```bash
-# from this repo
-mkdir -p .cursor/skills
-cp -R skill .cursor/skills/keel
-# or symlink:
-# ln -s "$(pwd)/skill" .cursor/skills/keel
+cd /path/to/keel
+node cli/bin/keel.js install --providers=cursor
+# or: npm link   then: keel install
 ```
 
-In Cursor Agent chat:
+Reload Cursor → Agent → `/keel` → `/keel init` → `/keel critique`.
 
-```
-/keel init
-/keel document
-/keel critique              # 8 category scores + personas + backlog
-/keel cost checkout
-/keel harden worker/orders
+```bash
+node skill/scripts/detect.js --json src/
+node cli/bin/keel.js detect --json .
 ```
 
-Bare `/keel` shows a context-aware menu (never auto-runs).
+## Commands
 
-### Critique (Impeccable-style scoring)
+Build: `init` `document` `shape` `extract`  
+Evaluate: `critique` `audit` `cost` `secure` `observe` `doctor`  
+Refine: `polish` `organize` `distill` `harden` `migrate`  
+Fix: `optimize` `clarify` `load`  
+System: `hooks`
 
-`/keel critique` grades the target on **8 categories** (0–4 each, usually **/32**), walks **2–3 engineering personas** (SRE, security, staff, FinOps, API consumer, chaos), and lists **P0–P3** fixes with suggested `/keel` follow-ups. Details: `skill/reference/critique.md` + `personas.md`.
+### Critique
 
-## What you get
+8 categories (usually **/32**), 6 personas (+ PRODUCT-derived), baselines, focus mode, trend history in `.keel/critique/`.
 
-| Layer | MVP |
-|-------|-----|
-| Router skill | `/keel <command>` |
-| Context | `PRODUCT.md` + `ARCHITECTURE.md` templates |
-| Floor | `reference/eng-floor.md` (Verify + Refuse) |
-| Commands | init, document, shape, critique (scored + personas), audit, cost, organize, distill, harden, optimize, clarify |
-| Detector / hooks | Planned (Phase 3) |
+### Detector (18 rules)
 
-## Inspired by
+empty-catch, select-star, secrets, unbounded findMany, N+1 await-in-loop, http timeouts, Promise.all fan-out, SQL concat, TLS verify off, god files, …
 
-[pbakaus/impeccable](https://github.com/pbakaus/impeccable) — same shell (one skill, durable context, command vocabulary, craft floor, dual critique), different domain (backend systems instead of UI).
+Exit `0` clean · `2` primary findings · `1` error.
+
+## Layout
+
+```
+skill/           # canonical skill + scripts/detect.js + hook.js
+cli/bin/keel.js  # install | update | detect
+tests/fixtures/  # smelly-api oracle
+docs/cases/      # before/after narrative
+```
+
+Providers: `cursor`, `claude`, `agents`/`codex` via `keel install --providers=…`.
 
 ## License
 
-Apache-2.0 (intended; add LICENSE before publishing).
+Apache-2.0

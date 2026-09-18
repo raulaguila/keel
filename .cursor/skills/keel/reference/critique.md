@@ -10,8 +10,18 @@ Chat report is the primary deliverable. Also write `.keel/critique/<timestamp>__
 - Run A and B as **isolated sub-agents** when Task/sub-agent tools exist. Inline = degraded: first line must be `⚠️ DEGRADED: single-context (<reason>)`.
 - Finish A before folding B into parent synthesis.
 - Prefer reading code, tests, OpenAPI/proto, migrations, configs, and one real request/job path. Invent no SLOs, QPS, or bills.
-- Load [personas.md](personas.md) for persona definitions and selection.
+- Load [personas.md](personas.md), [baselines.md](baselines.md), and [stack-rubrics.md](stack-rubrics.md) when scoring.
 - End with questions **last** — nothing after the question block.
+
+## Focus mode
+
+User may pass `--only <cats>` or say “focus on security and cost”. Still emit the **full 8-row table**, but:
+
+- Mark non-focus categories scored lightly (`depth: skim`) in Key Issue.
+- Put deep findings only in focus categories.
+- Header must say `Focus: security, cost`.
+
+Category aliases: `boundaries`, `contracts`, `reliability`, `data`, `security`, `cost`/`performance`, `operability`/`observe`, `organization`/`complexity`.
 
 ## Assessment A — Engineering judgment (+ personas)
 
@@ -26,15 +36,15 @@ Return: mode, personas used, category scores with one-line key issue each, 2–3
 
 ## Assessment B — Evidence
 
-Gather without pretending a detector exists unless `keel detect` is installed:
+1. Run the bundled detector when present:
+   ```bash
+   node <skill-base-dir>/scripts/detect.js --json <target>
+   # or: <skill-base-dir>/scripts/keel detect --json <target>
+   ```
+2. Apply [stack-rubrics.md](stack-rubrics.md) for the repo’s language.
+3. Also gather: failure/authz tests; import direction; pool/timeout config; migration safety signals.
 
-- Tests covering failure / authz denial / idempotency
-- Grep heuristics: empty catches, `TODO(security)`, `SELECT *`, missing timeout near HTTP clients, unbounded `findAll` / `Promise.all` fan-out
-- Import / package direction (cycles, god packages)
-- Config: pool sizes, timeouts, retry defaults
-- Infra/schema: shared DB across deployables, missing indexes on obvious FK filters
-
-Return: evidence bullets with paths, counts, and false-positive notes.
+Return: detector JSON summary (counts by rule), rubric hits, false-positive notes. If detector missing, say so — do not pretend.
 
 ## Synthesis — report structure
 
@@ -44,7 +54,7 @@ Do not concatenate A+B. Weave agreement/disagreement. Present this structure in 
 
 - Dual-agent: `Method: dual-agent (A: … · B: …)`
 - Or: `⚠️ DEGRADED: single-context (<reason>)`
-- Target, mode, personas selected
+- Target, mode, personas selected, baseline band from [baselines.md](baselines.md), focus (if any)
 
 ### 2. Engineering Health Score
 
@@ -62,7 +72,15 @@ Do not concatenate A+B. Weave agreement/disagreement. Present this structure in 
 
 Applicable max = 4 × scored categories (usually **/32**). Be honest: a 4 is rare. Most real backends land **18–26 / 32**.
 
-**Bands** (use % when any `n/a`): 90%+ Excellent · 70%+ Good · 50%+ Acceptable · 30%+ Poor · below Critical.
+**Bands**: use [baselines.md](baselines.md). Apply mode soft-floors and call out block-merge conditions.
+
+### Trend
+
+After writing the snapshot, if prior `.keel/critique/*__<slug>.md` files exist, print:
+
+`Trend for <slug> (last 5): 18 → 22 → 24 → 21 → 26 (out of 32)`
+
+First run → “First run for this target, no trend yet.” Differing `max_score` → print per-entry denominators.
 
 ### 3. Overall impression
 
@@ -110,7 +128,23 @@ When possible:
 .keel/critique/<ISO-ish-timestamp>__<slug>.md
 ```
 
-Include the full score table, `total_score`, `max_score`, `p0_count`, `p1_count`, personas, and priority issues. Skip “Ask the user”. If `.keel/` cannot be written, say so and continue — chat still delivers the report.
+Include YAML frontmatter when possible:
+
+```yaml
+---
+target: …
+slug: …
+total_score: 22
+max_score: 32
+p0_count: 1
+p1_count: 3
+personas: [Mira, Kai, Devon]
+mode: Serve
+focus: []
+---
+```
+
+Then the full score table and priority issues. Skip “Ask the user”. If `.keel/` cannot be written, say so and continue — chat still delivers the report.
 
 ---
 

@@ -1,0 +1,33 @@
+{
+  "name": "keel-craft",
+  "version": "0.2.0",
+  "description": "Backend craft skill for AI coding agents — scored critique, personas, detector, hooks",
+  "type": "module",
+  "bin": {
+    "keel": "cli/bin/keel.js"
+  },
+  "files": [
+    "cli/",
+    "skill/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "keel",
+    "backend",
+    "skills",
+    "cursor",
+    "architecture",
+    "lint",
+    "critique"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "detect": "node skill/scripts/detect.js",
+    "test:detector": "node tests/oracle/run-detector.mjs",
+    "install:skill": "node cli/bin/keel.js install --providers=cursor"
+  }
+}
